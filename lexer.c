@@ -32,11 +32,13 @@ void skipWhiteSpace(){
 
 
 int main (int argc, char **argv){
-	FILE *fp;
-	fp = fopen(argv[1], "r");
+	input = fopen(argv[1], "r");
 	
+	while (!feof(input)){
+		printf("%c", read());
+	}
 	
-	fclose(fp);
+	fclose(input);
 	
 	return 0;
 }
