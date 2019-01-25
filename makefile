@@ -5,4 +5,4 @@ lexer	:	lexer.o
 lexer.o	:	lexer.c lexer.h
 		gcc -Wall -std=c99 -Wextra -g -c lexer.c
 clean	:	
-		rm lexer.o
+		rm lexer.o lexer

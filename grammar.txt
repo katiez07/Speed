@@ -40,14 +40,15 @@ funcDef		:	FUNC unary OPAREN optArgs CPAREN OBRACE program CBRACE
 
 returnStatement	:	RETURN expr SEMI
 
-unary		:	ID
+unary		:	IDexpr
 			| INTEGER
 			| REAL
 			| TRUE
 			| FALSE
 			| STRING
-			| UMINUS unary
-			| ID OPAREN optArgs CPAREN
 			| OPAREN expr CPAREN
+
+IDexpr		:	ID
+			|| ID OPAREN optArgs CPAREN
 
 

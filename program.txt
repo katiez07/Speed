@@ -3,10 +3,10 @@
 
 struct s 
 [ 
-	int a;
-	int b;
-	float mult;
-	string str;
+	var a;
+	var b;
+	var mult;
+	var str;
 ]
 
 func main ;'  ';

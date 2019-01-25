@@ -1,27 +1,28 @@
-// 2author Katie Zucker
+// @author Katie Zucker
 
 #include <ctype.h>
-#include <string.h>
 
 typedef enum{
-	ID,
-	INTEGER,
-	REAL,
-	STRING,
+	OBRACKET,
+	CBRACKET,
 	SEMI,
 	OPAREN,
 	CPAREN,
 	OBRACE,
 	CBRACE,
-	OBRACKET,
-	CBRACKET,
-	STRUCTURE,
-	FUNCTION,
-	VARIABLE,
-	IF,
+	TRUE,
+	FALSE,
 	ELSE,
 	RETURN,
-	QUOTE
+	ID,
+	INTEGER,
+	REAL,
+	STRING,
+	STRUCT,
+	FUNCTION,
+	VARIABLE,
+	BAD_NUMBER,
+	BAD_STRING
 } types;
 
 typedef struct{
@@ -31,5 +32,3 @@ typedef struct{
 	double real;
 	int line;
 } Lexeme;
-
-
