@@ -1,0 +1,53 @@
+program		:	expr
+			| expr program
+
+expr		:	def
+			| unary
+			| ifStatement
+			| returnStatement
+			| OPAREN expr CPAREN
+			| args
+
+optExpr		:	expr
+			| *EMPTY*
+
+args		:	unary
+			| unary args
+
+optArgs		:	args
+			| *EMPTY*
+
+ifStatement	:	IF OPAREN expr CPAREN expr optElse
+			| IF OPAREN expr CPAREN OBRACE program CBRACE optElse
+
+else		:	ELSE ifstatement
+			| ELSE expr
+			| ELSE OBRACE program CBRACE
+
+optElse		:	else
+			| *EMPTY*
+
+def		: 	structDef
+			| varDef
+			| funcDef
+
+structDef	:	STRUCT unary OBRACKET program CBRACKET
+
+varDef		:	VAR expr SEMI
+			| VAR unary expr SEMI
+
+funcDef		:	FUNC unary OPAREN optArgs CPAREN OBRACE program CBRACE
+
+returnStatement	:	RETURN expr SEMI
+
+unary		:	ID
+			| INTEGER
+			| REAL
+			| TRUE
+			| FALSE
+			| STRING
+			| UMINUS unary
+			| ID OPAREN optArgs CPAREN
+			| OPAREN expr CPAREN
+
+

@@ -1,0 +1,13 @@
+comp = -g -std=c99 -Wall -Wextra
+all = lexer.h lexer.c
+
+lexer.o		:	lexer.h lexer.c
+			gcc -c $(comp) lexer.c
+
+clean		:	
+			rm lexer.o
+
+lex		:	lexer.o lexer.h lexer.c
+			gcc -o $(comp) lex lexer.o
+
+

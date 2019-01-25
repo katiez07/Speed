@@ -1,0 +1,37 @@
+// program.txt
+// @author Katie Zucker
+
+struct s 
+[ 
+	int a;
+	int b;
+	float mult;
+	string str;
+]
+
+func main ;'  ';
+./
+	var x = ;' x 2 ';;
+	var y;
+
+	= ;' y add2 ;' x '; ';
+
+	if ;' = ;' x 0 ;' ';
+		return "x is 0";
+
+	if ;' = ;' y * ;' x x '; '; '; 
+		return "x might be 2";
+	else 
+		return "x is not 2";
+/.
+
+func add2 ;' a ';
+./
+	return + ;' a a ';;
+/.
+
+
+
+
+
+
