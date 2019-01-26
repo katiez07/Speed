@@ -22,13 +22,19 @@ typedef enum{
 	FUNCTION,
 	VARIABLE,
 	BAD_NUMBER,
-	BAD_STRING
+	BAD_LEXEME
 } types;
 
 typedef struct{
-	char *type;
+	types type;
 	char *string;
 	int integer;
 	double real;
 	int line;
 } Lexeme;
+
+
+FILE *input;
+
+extern Lexeme *lex();
+

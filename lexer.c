@@ -16,8 +16,7 @@ FILE *input;
 */
 
 char read(){
-	return 'x';
-	//return (char)fgetc(input);
+	return (char)fgetc(input);
 }
 
 char pushback(ch){
@@ -42,15 +41,42 @@ void skipWhiteSpace(){
 **/
 
 // constructors
-Lexeme *newLexeme(lexemeType){
+Lexeme *newLexeme(types lexemeType){
 	Lexeme *l = malloc(sizeof(Lexeme));
 	l->type = lexemeType;
+	return l;
+}
+
+Lexeme *newStringLexeme(types lexemeType, char *str){
+	Lexeme *l = malloc(sizeof(Lexeme));
+	l->type = lexemeType;
+	l->string = str;
+	return l;
+}
+
+Lexeme *newIntLexeme(types lexemeType, int numInt){
+	Lexeme *l = malloc(sizeof(Lexeme));
+	l->type = lexemeType;
+	l->integer = numInt;
 	return l;
 }
 
 // lexThing functions
 Lexeme *lexSemiParen(){
 	Lexeme *thing = malloc(sizeof(Lexeme));
+
+	return newLexeme(SEMI);
+}
+
+Lexeme *lexNumber(){
+	return NULL;
+}
+
+Lexeme *lexVarOrKey(){
+	return NULL;
+}
+
+Lexeme *lexString(){
 	return NULL;
 }
 
@@ -59,27 +85,23 @@ Lexeme *lex(){
 	
 	skipWhiteSpace();
 	//char ch = read();
-	char ch = 'x';
+	char ch = read();
 	if (ch == '[')
 		return newLexeme(OBRACKET);
 	else if (ch == ']')
 		return newLexeme(OBRACKET);
 	else if (ch == ';')
 		return lexSemiParen();
+	else if (isdigit(ch))
+		return lexNumber();
+	else if (ch == '\"')
+		return lexString();
+	else if (isalpha(ch))
+		return lexVarOrKey();
+	else
+		return newLexeme(BAD_LEXEME);
 
-
-	return thing;
+	return NULL;
 }
 
 
-int main (int argc, char **argv){
-	input = fopen(argv[1], "r");
-	
-	while (!feof(input)){
-		printf("%c", read());
-	}
-	
-	fclose(input);
-	
-	return 0;
-}
