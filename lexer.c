@@ -74,6 +74,13 @@ Lexeme *newRealLexeme(types lexemeType, double numReal){
 	return l;
 }
 
+Lexeme *newIDLexeme(types lexemeType, char *id){
+	Lexeme *l = malloc(sizeof(Lexeme));
+	l->type = lexemeType;
+	l->id = id;
+	return l;
+}
+
 // lexThing functions
 Lexeme *lexSemiOParen(){
 	char ch0 = read();
@@ -144,6 +151,8 @@ Lexeme *lexNumber(){
 	int i = 0;
 	while (!feof(input) && (isdigit(ch0) || ch0 == '.')){
 		buff[i] = ch0;
+		if (ch0 == '.' && real)
+			return newLexeme(BAD_NUMBER);
 		if (ch0 == '.')
 			real = 1;
 		ch0 = read();
@@ -157,8 +166,31 @@ Lexeme *lexNumber(){
 }
 
 Lexeme *lexKeyOrID(){
-	read();
-	return NULL;
+	char *buff = malloc(sizeof(char));
+	char ch0 = read();
+	int i = 0;
+	while (!isspace(ch0) && (ch0 != '/') && (ch0 != '\'')
+		&& (ch0 != ';') && (ch0 != '[') && (ch0 != ']')
+		&& (ch0 != '.') && (ch0 != '/')){
+		buff[i] = ch0;
+		ch0 = read();
+		i++;
+	}
+
+	if (strcmp(buff, "if") == 0)
+		return newLexeme(IF);
+	else if (strcmp(buff, "else") == 0)
+		return newLexeme(ELSE);
+	else if (strcmp(buff, "return") == 0)
+		return newLexeme(RETURN);
+	else if (strcmp(buff, "struct") == 0)
+		return newLexeme(STRUCT);
+	else if (strcmp(buff, "func") == 0)
+		return newLexeme(FUNCTION);
+	else if (strcmp(buff, "var") == 0)
+		return newLexeme(VARIABLE);
+	else 
+		return newIDLexeme(ID, buff);
 }
 
 Lexeme *lex(){

@@ -25,11 +25,25 @@ void printLex(Lexeme *l){
 	else if (l->type == COMMENT)
 		printf("COMMENT\n");
 	else if (l->type == STRING)
-		printf("STRING\n");
+		printf("STRING \"%s\"\n", l->string);
 	else if (l->type == REAL)
 		printf("REAL %lf\n", l->real);
 	else if (l->type == INTEGER)
 		printf("INTEGER %d\n", l->integer);
+	else if (l->type == IF)
+		printf("IF\n");
+	else if (l->type == ELSE)
+		printf("ELSE\n");
+	else if (l->type == RETURN)
+		printf("RETURN\n");
+	else if (l->type == STRUCT)
+		printf("STRUCT\n");
+	else if (l->type == FUNCTION)
+		printf("FUNCTION\n");
+	else if (l->type == VARIABLE)
+		printf("VARIABLE\n");
+	else if (l->type == ID)
+		printf("ID %s\n", l->id);
 	else if (l->type == BAD_LEXEME){
 		fprintf(stderr, "BAD LEXEME\n");
 		//exit(-1);

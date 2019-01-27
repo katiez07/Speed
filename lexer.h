@@ -11,6 +11,7 @@ typedef enum{
 	OBRACE,
 	CBRACE,
 	COMMENT,
+	IF,
 	ELSE,
 	RETURN,
 	ID,
@@ -26,6 +27,7 @@ typedef enum{
 
 typedef struct{
 	types type;
+	char *id;
 	char *string;
 	int integer;
 	double real;
