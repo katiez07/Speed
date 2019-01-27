@@ -176,6 +176,7 @@ Lexeme *lexKeyOrID(){
 		ch0 = read();
 		i++;
 	}
+	pushback(ch0);
 
 	if (strcmp(buff, "if") == 0)
 		return newLexeme(IF);
@@ -214,12 +215,13 @@ Lexeme *lex(){
 		pushback(ch);
 		return lexNumber();
 	}
-	else if (isalpha(ch)){
+	else if (ch >= 33 && ch <= 126){
 		pushback(ch);
 		return lexKeyOrID();
 	}
-	else
+	else{
 		return NULL;
+	}
 
 }
 

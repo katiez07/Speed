@@ -16,7 +16,7 @@ func main ;'  ';
 
 	= ;' y add2 ;' x '; ';
 
-	if ;' = ;' x 0 ;' ';
+	if ;' = ;' x 0 '; ';
 		return "x is 0";
 
 	if ;' = ;' y * ;' x x '; '; '; 
