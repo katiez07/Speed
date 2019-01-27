@@ -16,6 +16,12 @@ void printLex(Lexeme *l){
 		printf("%s", "SEMI\n");
 	else if (l->type == OPAREN)
 		printf("%s", "OPAREN\n");
+	else if (l->type == CPAREN)
+		printf("%s", "CPAREN\n");
+	else if (l->type == OBRACE)
+		printf("%s", "OBRACE\n");
+	else if (l->type == CBRACE)
+		printf("%s", "CBRACE\n");
 	else
 		printf("x\n");
 }

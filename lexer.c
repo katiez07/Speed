@@ -86,7 +86,36 @@ Lexeme *lexSemiOParen(){
 }
 
 Lexeme *lexCParen(){
-	return newLexeme(CPAREN);
+	char ch0 = read();
+	if (ch0 == ';'){
+		return newLexeme(CPAREN);
+	}
+	else{
+		pushback(ch0);
+		return newLexeme(BAD_LEXEME);
+	}
+}
+
+Lexeme *lexOBrace(){
+	char ch0 = read();
+	if (ch0 == '/'){
+		return newLexeme(OBRACE);
+	}
+	else{
+		pushback(ch0);
+		return newLexeme(BAD_LEXEME);
+	}
+}
+
+Lexeme *lexCBrace(){
+	char ch0 = read();
+	if (ch0 == '.'){
+		return newLexeme(CBRACE);
+	}
+	else{
+		pushback(ch0);
+		return newLexeme(BAD_LEXEME);
+	}
 }
 
 Lexeme *lexNumber(){
@@ -114,6 +143,10 @@ Lexeme *lex(){
 		return lexSemiOParen();
 	else if (ch == '\'')
 		return lexCParen();
+	else if (ch == '.')
+		return lexOBrace();
+	else if (ch == '/')
+		return lexCBrace();
 	else if (isdigit(ch))
 		return lexNumber();
 	else if (ch == '\"')
