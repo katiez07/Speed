@@ -6,6 +6,8 @@
 #include "lexer.h"
 
 void printLex(Lexeme *l){
+	if (l == NULL)
+		return;
 	if (l->type == OBRACKET)
 		printf("%s", "OBRACKET\n");
 	else if (l->type == CBRACKET)
@@ -24,7 +26,7 @@ int main(int argc, char **argv){
 	Lexeme *l = malloc(sizeof(Lexeme));
 	while (!feof(input)){
 		l = lex();
-		//printLex(l);
+		printLex(l);
 	}
 	//printLex(l);
 

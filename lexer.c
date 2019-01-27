@@ -106,7 +106,6 @@ Lexeme *lex(){
 	
 	skipWhiteSpace();
 	char ch = read();
-	printf("in lex: %c\n", ch);
 	if (ch == '[')
 		return newLexeme(OBRACKET);
 	else if (ch == ']')
