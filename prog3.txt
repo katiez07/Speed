@@ -3,5 +3,6 @@
 
 var program ;'  ';
 ./
-
+	var x;
+	= ;' x "abcdef" ';;
 /.

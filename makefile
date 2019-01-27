@@ -10,3 +10,18 @@ scanner.o	:	lexer.c lexer.h scanner.c
 
 clean		:	
 			rm lexer.o scanner.o scanner
+
+test1		:	
+			scanner program.txt
+
+test2		:	
+			scanner prog1.txt
+
+test3		:	
+			scanner prog2.txt
+
+test4		:	
+			scanner prog3.txt
+
+test5		:	
+			scanner prog4.txt
