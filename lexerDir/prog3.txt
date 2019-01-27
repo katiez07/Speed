@@ -1,0 +1,8 @@
+// comment!
+// another comment
+
+var program ;'  ';
+./
+	var x;
+	= ;' x "abcdef" ';;
+/.
