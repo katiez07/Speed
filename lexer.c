@@ -118,21 +118,27 @@ Lexeme *lexCBrace(){
 	}
 }
 
+Lexeme *lexString(){
+	char *buff = malloc(sizeof(char));
+	char ch0 = read();
+	int i = 0;
+	while (ch0 != '\"'){
+		buff[i] = ch0;
+		ch0 = read();
+		i++;
+	}
+	return newStringLexeme(STRING, buff);
+}
+
 Lexeme *lexNumber(){
 	return NULL;
 }
 
-Lexeme *lexVarOrKey(){
-	return NULL;
-}
-
-Lexeme *lexString(){
+Lexeme *lexKeyOrID(){
 	return NULL;
 }
 
 Lexeme *lex(){
-	Lexeme *thing = malloc(sizeof(Lexeme));
-	
 	skipWhiteSpace();
 	char ch = read();
 	if (ch == '[')
@@ -147,16 +153,14 @@ Lexeme *lex(){
 		return lexOBrace();
 	else if (ch == '/')
 		return lexCBrace();
-	else if (isdigit(ch))
-		return lexNumber();
 	else if (ch == '\"')
 		return lexString();
+	else if (isdigit(ch))
+		return lexNumber();
 	else if (isalpha(ch))
-		return lexVarOrKey();
+		return lexKeyOrID();
 	else
 		return newLexeme(BAD_LEXEME);
 
-	return NULL;
 }
-
 

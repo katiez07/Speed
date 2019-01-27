@@ -22,8 +22,15 @@ void printLex(Lexeme *l){
 		printf("%s", "OBRACE\n");
 	else if (l->type == CBRACE)
 		printf("%s", "CBRACE\n");
+	else if (l->type == STRING)
+		printf("%s", "STRING\n");
+	else if (l->type == BAD_LEXEME){
+		fprintf(stderr, "BAD LEXEME\n");
+		//exit(-1);
+	}
+		
 	else
-		printf("x\n");
+		fprintf(stderr, "Lexeme doesn't have a type\n");
 }
 
 int main(int argc, char **argv){

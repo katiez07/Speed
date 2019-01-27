@@ -43,8 +43,6 @@ returnStatement	:	RETURN expr SEMI
 unary		:	IDexpr
 			| INTEGER
 			| REAL
-			| TRUE
-			| FALSE
 			| STRING
 			| OPAREN expr CPAREN
 

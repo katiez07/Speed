@@ -10,8 +10,6 @@ typedef enum{
 	CPAREN,
 	OBRACE,
 	CBRACE,
-	TRUE,
-	FALSE,
 	ELSE,
 	RETURN,
 	ID,

@@ -9,4 +9,4 @@ scanner.o	:	lexer.c lexer.h scanner.c
 			gcc -Wall -std=c99 -Wextra -g -c scanner.c
 
 clean		:	
-			rm lexer.o scanner
+			rm lexer.o scanner.o scanner
