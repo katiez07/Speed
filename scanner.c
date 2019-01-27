@@ -9,23 +9,27 @@ void printLex(Lexeme *l){
 	if (l == NULL)
 		return;
 	if (l->type == OBRACKET)
-		printf("%s", "OBRACKET\n");
+		printf("OBRACKET\n");
 	else if (l->type == CBRACKET)
-		printf("%s", "CBRACKET\n");
+		printf("CBRACKET\n");
 	else if (l->type == SEMI)
-		printf("%s", "SEMI\n");
+		printf("SEMI\n");
 	else if (l->type == OPAREN)
-		printf("%s", "OPAREN\n");
+		printf("OPAREN\n");
 	else if (l->type == CPAREN)
-		printf("%s", "CPAREN\n");
+		printf("CPAREN\n");
 	else if (l->type == OBRACE)
-		printf("%s", "OBRACE\n");
+		printf("OBRACE\n");
 	else if (l->type == CBRACE)
-		printf("%s", "CBRACE\n");
+		printf("CBRACE\n");
 	else if (l->type == COMMENT)
-		printf("%s", "COMMENT\n");
+		printf("COMMENT\n");
 	else if (l->type == STRING)
-		printf("%s", "STRING\n");
+		printf("STRING\n");
+	else if (l->type == REAL)
+		printf("REAL %lf\n", l->real);
+	else if (l->type == INTEGER)
+		printf("INTEGER %d\n", l->integer);
 	else if (l->type == BAD_LEXEME){
 		fprintf(stderr, "BAD LEXEME\n");
 		//exit(-1);

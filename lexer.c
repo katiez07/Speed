@@ -38,6 +38,7 @@ void skipWhiteSpace(){
 	char ch;
 	while (isspace(ch))
 		ch = read();
+	//pushback(ch);
 }
 
 
@@ -137,10 +138,26 @@ Lexeme *lexString(){
 }
 
 Lexeme *lexNumber(){
-	return NULL;
+	double real = 0;
+	char *buff = malloc(sizeof(char));
+	char ch0 = read();
+	int i = 0;
+	while (!feof(input) && (isdigit(ch0) || ch0 == '.')){
+		buff[i] = ch0;
+		if (ch0 == '.')
+			real = 1;
+		ch0 = read();
+		i++;
+	}
+	pushback(ch0);
+	if (real)
+		return newRealLexeme(REAL, atof(buff));
+	else
+		return newIntLexeme(INTEGER, atoi(buff));
 }
 
 Lexeme *lexKeyOrID(){
+	read();
 	return NULL;
 }
 
@@ -161,10 +178,14 @@ Lexeme *lex(){
 		return lexCommentCBrace();
 	else if (ch == '\"')
 		return lexString();
-	else if (isdigit(ch))
+	else if (isdigit(ch)){
+		pushback(ch);
 		return lexNumber();
-	else if (isalpha(ch))
+	}
+	else if (isalpha(ch)){
+		pushback(ch);
 		return lexKeyOrID();
+	}
 	else
 		return NULL;
 
