@@ -16,23 +16,28 @@ FILE *input;
 */
 
 char read(){
-	return (char)fgetc(input);
-}
-
-char pushback(ch){
 	if (charPushed){
 		charPushed = 0;
-		return (char)pushChar;
+		return pushChar;
 	}
-	return (char)read();
+	else{
+		return fgetc(input);
+	}
+}
+
+void pushback(char ch){
+	if (charPushed){
+		fprintf(stderr, "Fatal error: char has already been pushed\n");
+		exit(-1);
+	}
+	charPushed = 1;
+	pushChar = ch;
 }
 
 void skipWhiteSpace(){
 	char ch;
 	while (isspace(ch))
 		ch = read();
-
-	pushback(ch);
 }
 
 
@@ -61,11 +66,28 @@ Lexeme *newIntLexeme(types lexemeType, int numInt){
 	return l;
 }
 
-// lexThing functions
-Lexeme *lexSemiParen(){
-	Lexeme *thing = malloc(sizeof(Lexeme));
+Lexeme *newRealLexeme(types lexemeType, double numReal){
+	Lexeme *l = malloc(sizeof(Lexeme));
+	l->type = lexemeType;
+	l->real = numReal;
+	return l;
+}
 
-	return newLexeme(SEMI);
+// lexThing functions
+Lexeme *lexSemiOParen(){
+	char ch0 = read();
+	char ch1 = read();
+	printf("%c%c", ch0, ch1);
+	if (ch1 == '\'')
+		return newLexeme(OPAREN);
+	else {
+		pushback(ch1);
+		return newLexeme(SEMI);
+	}
+}
+
+Lexeme *lexCParen(){
+	return newLexeme(CPAREN);
 }
 
 Lexeme *lexNumber(){
@@ -84,14 +106,16 @@ Lexeme *lex(){
 	Lexeme *thing = malloc(sizeof(Lexeme));
 	
 	skipWhiteSpace();
-	//char ch = read();
 	char ch = read();
+	printf("in lex: %c\n", ch);
 	if (ch == '[')
 		return newLexeme(OBRACKET);
 	else if (ch == ']')
 		return newLexeme(OBRACKET);
 	else if (ch == ';')
-		return lexSemiParen();
+		return lexSemiOParen();
+	else if (ch == '\'')
+		return lexCParen();
 	else if (isdigit(ch))
 		return lexNumber();
 	else if (ch == '\"')
