@@ -76,12 +76,11 @@ Lexeme *newRealLexeme(types lexemeType, double numReal){
 // lexThing functions
 Lexeme *lexSemiOParen(){
 	char ch0 = read();
-	char ch1 = read();
-	printf("%c%c", ch0, ch1);
-	if (ch1 == '\'')
+	if (ch0 == '\''){
 		return newLexeme(OPAREN);
+	}
 	else {
-		pushback(ch1);
+		pushback(ch0);
 		return newLexeme(SEMI);
 	}
 }
