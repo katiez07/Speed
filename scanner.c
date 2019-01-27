@@ -44,13 +44,18 @@ void printLex(Lexeme *l){
 		printf("VARIABLE\n");
 	else if (l->type == ID)
 		printf("ID %s\n", l->id);
-	else if (l->type == BAD_LEXEME){
-		fprintf(stderr, "BAD LEXEME\n");
-		//exit(-1);
+	else if (l->type == BAD_NUMBER){
+		printf("Fatal error: BAD_NUMBER lexeme on line %d\n", l->line);
+		exit(-1);
 	}
-		
-	else
-		fprintf(stderr, "Lexeme doesn't have a type\n");
+	else if (l->type == BAD_LEXEME){
+		fprintf(stderr, "Fatal error: BAD LEXEME on line %d\n", 
+			l->line);
+		exit(-1);
+	}
+	else{
+		printf("unknown lexeme\n");
+	}
 }
 
 int main(int argc, char **argv){

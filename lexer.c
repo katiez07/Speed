@@ -10,6 +10,7 @@
 char pushChar;
 int charPushed = 0;
 FILE *input;
+int lineno = 1;
 
 /*
 * helper functions
@@ -35,10 +36,16 @@ void pushback(char ch){
 }
 
 void skipWhiteSpace(){
-	char ch;
-	while (isspace(ch))
+	char ch = read();
+	if (ch == '\n')
+		lineno++;
+	while (isspace(ch)){
 		ch = read();
-	//pushback(ch);
+		if (ch == '\n'){
+			lineno++;
+		}
+	}
+	pushback(ch);
 }
 
 
@@ -50,12 +57,14 @@ void skipWhiteSpace(){
 Lexeme *newLexeme(types lexemeType){
 	Lexeme *l = malloc(sizeof(Lexeme));
 	l->type = lexemeType;
+	l->line = lineno;
 	return l;
 }
 
 Lexeme *newStringLexeme(types lexemeType, char *str){
 	Lexeme *l = malloc(sizeof(Lexeme));
 	l->type = lexemeType;
+	l->line = lineno;
 	l->string = str;
 	return l;
 }
@@ -63,6 +72,7 @@ Lexeme *newStringLexeme(types lexemeType, char *str){
 Lexeme *newIntLexeme(types lexemeType, int numInt){
 	Lexeme *l = malloc(sizeof(Lexeme));
 	l->type = lexemeType;
+	l->line = lineno;
 	l->integer = numInt;
 	return l;
 }
@@ -70,6 +80,7 @@ Lexeme *newIntLexeme(types lexemeType, int numInt){
 Lexeme *newRealLexeme(types lexemeType, double numReal){
 	Lexeme *l = malloc(sizeof(Lexeme));
 	l->type = lexemeType;
+	l->line = lineno;
 	l->real = numReal;
 	return l;
 }
@@ -77,6 +88,7 @@ Lexeme *newRealLexeme(types lexemeType, double numReal){
 Lexeme *newIDLexeme(types lexemeType, char *id){
 	Lexeme *l = malloc(sizeof(Lexeme));
 	l->type = lexemeType;
+	l->line = lineno;
 	l->id = id;
 	return l;
 }

@@ -36,6 +36,7 @@ typedef struct{
 
 
 FILE *input;
+int linenum;
 
 extern Lexeme *lex();
 extern void skipWhiteSpace();
