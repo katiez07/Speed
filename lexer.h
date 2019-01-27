@@ -10,6 +10,7 @@ typedef enum{
 	CPAREN,
 	OBRACE,
 	CBRACE,
+	COMMENT,
 	ELSE,
 	RETURN,
 	ID,
@@ -35,4 +36,5 @@ typedef struct{
 FILE *input;
 
 extern Lexeme *lex();
+extern void skipWhiteSpace();
 

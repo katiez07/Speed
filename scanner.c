@@ -22,6 +22,8 @@ void printLex(Lexeme *l){
 		printf("%s", "OBRACE\n");
 	else if (l->type == CBRACE)
 		printf("%s", "CBRACE\n");
+	else if (l->type == COMMENT)
+		printf("%s", "COMMENT\n");
 	else if (l->type == STRING)
 		printf("%s", "STRING\n");
 	else if (l->type == BAD_LEXEME){
@@ -34,12 +36,16 @@ void printLex(Lexeme *l){
 }
 
 int main(int argc, char **argv){
+	if (argc < 2){
+		fprintf(stderr, "Fatal error: too few args");
+		exit(-1);
+	}
+
 	input = fopen(argv[1], "r");
 
-	Lexeme *l = malloc(sizeof(Lexeme));
 	while (!feof(input)){
-		l = lex();
-		printLex(l);
+		skipWhiteSpace();
+		printLex(lex());
 	}
 	//printLex(l);
 

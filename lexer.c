@@ -107,10 +107,16 @@ Lexeme *lexOBrace(){
 	}
 }
 
-Lexeme *lexCBrace(){
+Lexeme *lexCommentCBrace(){
 	char ch0 = read();
 	if (ch0 == '.'){
 		return newLexeme(CBRACE);
+	}
+	else if (ch0 == '/'){
+		char ch1 = read();
+		while (ch1 != '\n')
+			ch1 = read();
+		return newLexeme(COMMENT);
 	}
 	else{
 		pushback(ch0);
@@ -152,7 +158,7 @@ Lexeme *lex(){
 	else if (ch == '.')
 		return lexOBrace();
 	else if (ch == '/')
-		return lexCBrace();
+		return lexCommentCBrace();
 	else if (ch == '\"')
 		return lexString();
 	else if (isdigit(ch))
@@ -160,7 +166,7 @@ Lexeme *lex(){
 	else if (isalpha(ch))
 		return lexKeyOrID();
 	else
-		return newLexeme(BAD_LEXEME);
+		return NULL;
 
 }
 
