@@ -136,7 +136,7 @@ Lexeme *lexCommentCBrace(){
 		char ch1 = read();
 		while (ch1 != '\n')
 			ch1 = read();
-		return newLexeme(COMMENT);
+		return NULL; //skip comments like they're whitespace
 	}
 	else{
 		pushback(ch0);

@@ -22,8 +22,6 @@ void printLex(Lexeme *l){
 		printf("OBRACE\n");
 	else if (l->type == CBRACE)
 		printf("CBRACE\n");
-	else if (l->type == COMMENT)
-		printf("COMMENT\n");
 	else if (l->type == STRING)
 		printf("STRING \"%s\"\n", l->string);
 	else if (l->type == REAL)
