@@ -47,7 +47,7 @@ void printLex(Lexeme *l){
 		exit(-1);
 	}
 	else if (l->type == BAD_LEXEME){
-		fprintf(stderr, "Fatal error: BAD LEXEME on line %d\n", 
+		printf("Fatal error: BAD LEXEME on line %d\n", 
 			l->line);
 		exit(-1);
 	}

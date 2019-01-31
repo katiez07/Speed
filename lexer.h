@@ -20,6 +20,7 @@ typedef enum{
 	STRUCT,
 	FUNCTION,
 	VARIABLE,
+	ENDOFFILE,
 	BAD_NUMBER,
 	BAD_LEXEME
 } types;
@@ -36,6 +37,7 @@ typedef struct{
 
 FILE *input;
 int linenum;
+Lexeme *curlex;
 
 extern Lexeme *lex();
 extern void skipWhiteSpace();

@@ -17,6 +17,12 @@ args		:	unary
 optArgs		:	args
 			| *EMPTY*
 
+params		:	ID
+			| ID params
+
+optParams	:	params
+			| *EMPTY*
+
 ifStatement	:	IF OPAREN expr CPAREN expr optElse
 			| IF OPAREN expr CPAREN OBRACE program CBRACE optElse
 
@@ -36,7 +42,7 @@ structDef	:	STRUCT unary OBRACKET program CBRACKET
 varDef		:	VAR expr SEMI
 			| VAR unary expr SEMI
 
-funcDef		:	FUNC unary OPAREN optArgs CPAREN OBRACE program CBRACE
+funcDef		:	FUNC unary OPAREN optParams CPAREN OBRACE program CBRACE
 
 returnStatement	:	RETURN expr SEMI
 

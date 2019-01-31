@@ -231,6 +231,8 @@ Lexeme *lex(){
 		pushback(ch);
 		return lexKeyOrID();
 	}
+	else if (ch < 0)
+		return newLexeme(ENDOFFILE);
 	else{
 		return NULL;
 	}
