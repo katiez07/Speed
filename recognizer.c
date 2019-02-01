@@ -23,6 +23,9 @@ void args();
 void optArgs();
 void params();
 void optParams();
+void ifStatement();
+void elseStatement();
+void optElseStatement();
 void def();
 void structDef();
 void varDef();
@@ -218,6 +221,40 @@ void params(){
 void optParams(){
 	if (paramsPending())
 		params();
+}
+
+void ifStatement(){
+	match(IF);
+	match(OPAREN);
+	expr();
+	match(CPAREN);
+	if (exprPending){
+		expr();
+		optElse();
+	}
+	else{
+		match(OBRACE);
+		progrm();
+		match(CBRACE);
+	}
+}
+
+void elseStatement(){
+	match(ELSE);
+	if (ifStatementPending)
+		ifStatement();
+	else if (exprPending())
+		expr();
+	else{
+		match(OBRACE);
+		program();
+		match(CBRACE);
+	}
+}
+
+void optElseStatement(){
+	if (elsePending())
+		elseStatement();
 }
 
 void def(){

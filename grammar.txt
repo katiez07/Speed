@@ -26,12 +26,12 @@ optParams	:	params
 ifStatement	:	IF OPAREN expr CPAREN expr optElse
 			| IF OPAREN expr CPAREN OBRACE program CBRACE optElse
 
-else		:	ELSE ifstatement
+elseStatement	:	ELSE ifstatement
 			| ELSE expr
 			| ELSE OBRACE program CBRACE
 
-optElse		:	else
-			| *EMPTY*
+optElseStatement	:	else
+				| *EMPTY*
 
 def		: 	structDef
 			| varDef
