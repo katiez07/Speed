@@ -42,3 +42,5 @@ Lexeme *curlex;
 extern Lexeme *lex();
 extern void skipWhiteSpace();
 
+extern Lexeme *newLexeme(types);
+

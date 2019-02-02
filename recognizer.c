@@ -9,6 +9,7 @@ int exprPending();
 int argsPending();
 int paramsPending();
 int ifStatementPending();
+int elseStatementPending();
 int defPending();
 int structDefPending();
 int varDefPending();
@@ -103,7 +104,10 @@ void advance(){
 
 void matchNoAdvance(types type){
 	if (!check(type)){
-		printf("Fatal error: syntax error on line %d\n", curlex->line);
+		printf("Fatal error: syntax error on line %d\n, curlex", curlex->line);
+		printLex(curlex);
+		printf("doesn't match ");
+		printLex(newLexeme(type));
 		exit(-1);
 	}
 }
@@ -144,14 +148,17 @@ int ifStatementPending(){
 	return check(IF);
 }
 
+int elseStatementPending(){
+	return check(ELSE);
+}
+
 int defPending(){
 	if (structDefPending())
 		return 1;
 	else if (varDefPending())
 		return 1;
-	else if (funcDefPending())
-		return 1;
-	return 0;
+	else 
+		return funcDefPending();
 }
 
 int structDefPending(){
@@ -196,10 +203,27 @@ void program(){
 }
 
 void expr(){
-
+	if (defPending())
+		def();
+	else if (unaryPending())
+		unary();
+	else if (ifStatementPending())
+		ifStatement();
+	else if (returnStatementPending())
+		returnStatement();
+	else if (check(OPAREN)){
+		match(OPAREN);
+		expr();
+		match(CPAREN);
+	}
+	else
+		args();
 }
 
-
+void optExpr(){
+	if (exprPending())
+		expr();
+}
 
 void args(){
 	unary();
@@ -228,20 +252,20 @@ void ifStatement(){
 	match(OPAREN);
 	expr();
 	match(CPAREN);
-	if (exprPending){
+	if (exprPending()){
 		expr();
-		optElse();
+		optElseStatement();
 	}
 	else{
 		match(OBRACE);
-		progrm();
+		program();
 		match(CBRACE);
 	}
 }
 
 void elseStatement(){
 	match(ELSE);
-	if (ifStatementPending)
+	if (ifStatementPending())
 		ifStatement();
 	else if (exprPending())
 		expr();
@@ -253,7 +277,7 @@ void elseStatement(){
 }
 
 void optElseStatement(){
-	if (elsePending())
+	if (elseStatementPending())
 		elseStatement();
 }
 
