@@ -120,6 +120,10 @@ void match(types type){
 
 /*** pending functions ***/
 
+int programPending(){
+	return exprPending();
+}
+
 int exprPending(){
 	if (defPending())
 		return 1;
@@ -199,7 +203,9 @@ int IDexprPending(){
 /*** calling functions ***/
 
 void program(){
-
+	expr();
+	if (programPending())
+		program();
 }
 
 void expr(){
@@ -300,21 +306,18 @@ void structDef(){
 
 void varDef(){
 	match(VARIABLE);
+	match(ID);
 	if (exprPending()){
 		expr();
 		match(SEMI);
 	}
-	else{
-		unary();
-		expr();
+	else
 		match(SEMI);
-	}
-
 }
 
 void funcDef(){
 	match(FUNCTION);
-	unary();
+	match(ID);
 	match(OPAREN);
 	optParams();
 	match(CPAREN);
@@ -378,7 +381,7 @@ int main(int argc, char **argv){
 		curlex = lex();
 	}
 
-	IDexpr();
+	program();
 
 	/*
 	while (!feof(input)){

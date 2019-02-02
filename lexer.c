@@ -136,6 +136,7 @@ Lexeme *lexCommentCBrace(){
 		char ch1 = read();
 		while (ch1 != '\n')
 			ch1 = read();
+		lineno++;
 		return NULL; //skip comments like they're whitespace
 	}
 	else{
@@ -212,7 +213,7 @@ Lexeme *lex(){
 	if (ch == '[')
 		return newLexeme(OBRACKET);
 	else if (ch == ']')
-		return newLexeme(OBRACKET);
+		return newLexeme(CBRACKET);
 	else if (ch == ';')
 		return lexSemiOParen();
 	else if (ch == '\'')

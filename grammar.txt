@@ -39,8 +39,8 @@ def		: 	structDef
 
 structDef	:	STRUCT unary OBRACKET program CBRACKET
 
-varDef		:	VAR expr SEMI
-			| VAR unary expr SEMI
+varDef		:	VAR ID SEMI
+			| VAR expr SEMI
 
 funcDef		:	FUNC unary OPAREN optParams CPAREN OBRACE program CBRACE
 
