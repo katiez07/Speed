@@ -1,0 +1,6 @@
+// test again?!
+
+func main ;'  ';
+./
+	var x = ;' x 2 ';;
+/.

@@ -218,8 +218,10 @@ void program(){
 void expr(){
 	if (defPending())
 		def();
-	else if (unaryPending())
+	else if (unaryPending()){
 		unary();
+		match(SEMI);
+	}
 	else if (ifStatementPending())
 		ifStatement();
 	else if (returnStatementPending())
@@ -313,12 +315,11 @@ void structDef(){
 
 void varDef(){
 	match(VARIABLE);
-	if (exprPending()){
-		match(ID);
+	match(ID);
+	if (check(SEMI))
 		match(SEMI);
-	}
 	else {
-		unary();
+		expr();
 		match(SEMI);
 	}
 }

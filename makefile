@@ -15,16 +15,16 @@ test1		:
 			recognizer program.txt
 
 test2		:	
-			recognizer prog1.txt
+			recognizer p1.txt
 
 test3		:	
-			recognizer prog2.txt
+			recognizer p2.txt
 
 test4		:	
-			recognizer prog3.txt
+			recognizer p3.txt
 
 test5		:	
-			recognizer prog4.txt
+			recognizer p4.txt
 
 run		:	
 			recognizer program.txt

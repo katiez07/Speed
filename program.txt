@@ -11,7 +11,7 @@ struct s
 
 func main ;'  ';
 ./
-	var x = ;' x 2 ';;
+	var x; = ;' x 2 ';
 	var y;
 
 	= ;' y add2 ;' x '; ';

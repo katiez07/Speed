@@ -1,0 +1,7 @@
+func f ;' a b c d '; 
+./ 
+	var aa;
+	= ;' aa 4 ';;
+	return aa;
+/.
+
