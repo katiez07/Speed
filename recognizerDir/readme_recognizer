@@ -1,0 +1,33 @@
+README specialized for the recognizer module submission
+
+run
+- program.txt - legal
+- p0.txt - legal
+- p5.txt - illegal
+- p6.txt - illegal
+- p7.txt - illegal
+
+test1
+- runs program.txt
+- full example program that uses every rule in the grammar
+- legal
+
+test2
+- runs p1.txt
+- very simple badly-formed example of a function missing a parenthesis
+- illegal
+
+test3
+- runs p2.txt
+- very simple, correctly-formed example of a var def
+- legal
+
+test4
+- runs p3.txt
+- more complex example, simpler than program.txt
+- legal
+
+test5
+- runs p4.txt
+- "ugly" code, but correct
+- legal

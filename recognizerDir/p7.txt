@@ -1,0 +1,7 @@
+// more bad code
+
+func main ;'  ';
+./
+	= ;' a 4 ';
+	41777;
+/.

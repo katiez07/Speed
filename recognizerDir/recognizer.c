@@ -108,12 +108,12 @@ void matchNoAdvance(types type){
 		printf("illegal\n");
 
 		// extra info on error
-		
+		/*
 		printf("curlex ");
 		printLex(curlex);
 		printf("doesn't match expected ");
 		printLex(newLexeme(type));
-		
+		*/
 
 		exit(-1);
 	}

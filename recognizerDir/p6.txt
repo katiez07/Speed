@@ -1,0 +1,9 @@
+// test again?!
+
+func main ;'  ';
+./
+	var x = ;' x 2 ';;
+	func 2 
+	[
+	]
+/.
