@@ -5,3 +5,4 @@ func f ;' a b c d ';
 	return aa;
 /.
 
+./

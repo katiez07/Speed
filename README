@@ -1,11 +1,10 @@
 README specialized for the recognizer module submission
 
-run
-- program.txt - legal
-- p0.txt - legal
-- p5.txt - illegal
-- p6.txt - illegal
-- p7.txt - illegal
+NOTE:
+The language is called Speed because it is optimized for typing efficiency. For this reason, parentheses and braces have been replaced with symbols that are easier to type, and lists are comma-less.
+
+Written by Katie Zucker. Based off of a mixture of C and Scam by John Lusth, which is based off Scheme by MIT, which is based off Lisp.
+
 
 test1
 - runs program.txt

@@ -1,0 +1,3 @@
+// comments
+func f;'b c d'; ./ var a; = ;'a *;' b c d  ';'; return + ;'a 2';; /.
+

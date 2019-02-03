@@ -1,0 +1,12 @@
+func main ;' ';
+./
+	var a;
+	= ;' a 14';
+	
+	return f ;' 2 ';;
+/.
+
+func f ;' x ';
+./
+	return x;
+/.
