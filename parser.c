@@ -1,4 +1,4 @@
-// recognizer.c
+// parser.c
 // @author Katie Zucker
 
 #include <stdio.h>
@@ -390,7 +390,6 @@ int main(int argc, char **argv){
 	}
 
 	program();
-	printf("legal\n");
 
 	fclose(input);
 

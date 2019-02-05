@@ -25,13 +25,15 @@ typedef enum{
 	BAD_LEXEME
 } types;
 
-typedef struct{
+typedef struct Lexeme {
 	types type;
 	char *id;
 	char *string;
 	int integer;
 	double real;
 	int line;
+	struct Lexeme *left;
+	struct Lexeme *right;
 } Lexeme;
 
 

@@ -58,6 +58,8 @@ Lexeme *newLexeme(types lexemeType){
 	Lexeme *l = malloc(sizeof(Lexeme));
 	l->type = lexemeType;
 	l->line = lineno;
+	l->left = NULL;
+	l->right = NULL;
 	return l;
 }
 
@@ -66,6 +68,8 @@ Lexeme *newStringLexeme(types lexemeType, char *str){
 	l->type = lexemeType;
 	l->line = lineno;
 	l->string = str;
+	l->left = NULL;
+	l->right = NULL;
 	return l;
 }
 
@@ -74,6 +78,8 @@ Lexeme *newIntLexeme(types lexemeType, int numInt){
 	l->type = lexemeType;
 	l->line = lineno;
 	l->integer = numInt;
+	l->left = NULL;
+	l->right = NULL;
 	return l;
 }
 
@@ -82,6 +88,8 @@ Lexeme *newRealLexeme(types lexemeType, double numReal){
 	l->type = lexemeType;
 	l->line = lineno;
 	l->real = numReal;
+	l->left = NULL;
+	l->right = NULL;
 	return l;
 }
 
@@ -90,6 +98,8 @@ Lexeme *newIDLexeme(types lexemeType, char *id){
 	l->type = lexemeType;
 	l->line = lineno;
 	l->id = id;
+	l->left = NULL;
+	l->right = NULL;
 	return l;
 }
 
