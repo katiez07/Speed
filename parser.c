@@ -18,22 +18,22 @@ int returnStatementPending();
 int unaryPending();
 int IDexprPending();
 
-void program();
-void expr();
-void args();
-void optArgs();
-void params();
-void optParams();
-void ifStatement();
-void elseStatement();
-void optElseStatement();
-void def();
-void structDef();
-void varDef();
-void funcDef();
-void returnStatement();
-void unary();
-void IDexpr();
+Lexeme *program();
+Lexeme *expr();
+Lexeme *args();
+Lexeme *optArgs();
+Lexeme *params();
+Lexeme *optParams();
+Lexeme *ifStatement();
+Lexeme *elseStatement();
+Lexeme *optElseStatement();
+Lexeme *def();
+Lexeme *structDef();
+Lexeme *varDef();
+Lexeme *funcDef();
+Lexeme *returnStatement();
+Lexeme *unary();
+Lexeme *IDexpr();
 
 
 void printLex(Lexeme *l){
@@ -209,44 +209,59 @@ int IDexprPending(){
 
 /*** calling functions ***/
 
-void program(){
-	expr();
+Lexeme *program(){
+	Lexeme *ex, *prog, *p;
+	ex = expr();
 	if (programPending())
-		program();
+		p = program();
+	else
+		p = NULL;
+	Lexeme *program = newLexeme(PROGRAM);
+	return cons(program, ex, prog);
 }
 
-void expr(){
+Lexeme *expr(){
 	if (defPending())
-		def();
+		return def();
 	else if (unaryPending())
-		unary();
+		return unary();
 	else if (ifStatementPending())
-		ifStatement();
+		return ifStatement();
 	else if (returnStatementPending())
-		returnStatement();
+		return returnStatement();
 	else if (check(OPAREN)){
 		match(OPAREN);
-		expr();
+		return expr();
 		match(CPAREN);
 	}
 	else
-		args();
+		return args();
 }
 
-void optExpr(){
+Lexeme *optExpr(){
 	if (exprPending())
-		expr();
+		return expr();
+	else
+		return NULL;
 }
 
-void args(){
-	unary();
+Lexeme *args(){
+	Lexeme *u;
+	Lexeme *more;
+	u = unary();
 	if (argsPending())
-		args();
+		more = args();
+	else
+		more = NULL;
+	Lexeme *args = newLexeme(ARGS);
+	return cons(args, u, more);
 }
 
-void optArgs(){
+Lexeme *optArgs(){
 	if (argsPending())
-		args();
+		return args();
+	else
+		return NULL;
 }
 
 void params(){
@@ -260,38 +275,52 @@ void optParams(){
 		params();
 }
 
-void ifStatement(){
+Lexeme *ifStatement(){
+	Lexeme *cond, *body, *another = NULL;
 	match(IF);
 	match(OPAREN);
-	expr();
+	cond = expr();
 	match(CPAREN);
 	if (exprPending()){
-		expr();
-		optElseStatement();
+		body = expr();
+		another = optElseStatement();
 	}
 	else{
 		match(OBRACE);
-		program();
+		body = program();
 		match(CBRACE);
 	}
+	Lexeme *glue = newLexeme(IFELSETOP);
+	Lexeme *ifstat = newLexeme(IFSTATEMENT);
+	ifstat = cons(ifstat, cond, body);
+	return cons(glue, ifstat, another);
 }
 
-void elseStatement(){
+Lexeme *elseStatement(){
+	Lexeme *cond, *body, *another = NULL;
 	match(ELSE);
-	if (ifStatementPending())
-		ifStatement();
+	if (ifStatementPending()){
+		return ifStatement();
+	}
 	else if (exprPending())
-		expr();
+		body = expr();
 	else{
 		match(OBRACE);
-		program();
+		body = program();
 		match(CBRACE);
 	}
+	Lexeme *glue = newLexeme(IFELSETOP);
+	Lexeme *elsestat = newLexeme(ELSESTATEMENT);
+	cond = NULL;
+	another = NULL;
+	elsestat = cons(elsestat, cond, body);
+	return cons(glue, elsestat, another);
 }
 
-void optElseStatement(){
+Lexeme *optElseStatement(){
 	if (elseStatementPending())
-		elseStatement();
+		return elseStatement();
+	return NULL;
 }
 
 void def(){

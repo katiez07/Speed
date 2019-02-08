@@ -22,7 +22,25 @@ typedef enum{
 	VARIABLE,
 	ENDOFFILE,
 	BAD_NUMBER,
-	BAD_LEXEME
+	BAD_LEXEME,
+	PROGRAM,
+	EXPR,
+	OPTEXPR,
+	ARGS,
+	OPTARGS,
+	PARAMS,
+	OPTPARAMS,
+	IFELSETOP,
+	IFSTATEMENT,
+	ELSESTATEMENT,
+	OPTELSESTATEMENT,
+	DEF,
+	STRUCTDEF,
+	VARDEF,
+	FUNCDEF,
+	RETURNSTATEMENT,
+	UNARY,
+	IDEXPR
 } types;
 
 typedef struct Lexeme {
@@ -46,3 +64,8 @@ extern void skipWhiteSpace();
 
 extern Lexeme *newLexeme(types);
 
+extern Lexeme *cons(Lexeme *, Lexeme *, Lexeme *);
+extern Lexeme *car(Lexeme *);
+extern Lexeme *cdr(Lexeme *);
+extern Lexeme *cadr(Lexeme *);
+extern Lexeme *cddr(Lexeme *);

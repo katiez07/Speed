@@ -103,6 +103,33 @@ Lexeme *newIDLexeme(types lexemeType, char *id){
 	return l;
 }
 
+/*
+ * cons, car, cdr functions
+ */
+
+Lexeme *cons(Lexeme *tree, Lexeme *left, Lexeme *right){
+	tree->left = left;
+	tree->right = right;
+	return tree;
+}
+
+Lexeme *car(Lexeme *tree){
+	return tree->left;
+}
+
+Lexeme *cdr(Lexeme *tree){
+	return tree->right;
+}
+
+Lexeme *cadr(Lexeme *tree){
+	return tree->right->left;
+}
+
+Lexeme *cddr(Lexeme *tree){
+	return tree->right->right;
+}
+
+
 // lexThing functions
 Lexeme *lexSemiOParen(){
 	char ch0 = read();
