@@ -40,7 +40,11 @@ typedef enum{
 	FUNCDEF,
 	RETURNSTATEMENT,
 	UNARY,
-	IDEXPR
+	IDEXPR,
+	ENV,
+	TAB,
+	I,
+	V
 } types;
 
 typedef struct Lexeme {
@@ -67,5 +71,7 @@ extern Lexeme *newLexeme(types);
 extern Lexeme *cons(Lexeme *, Lexeme *, Lexeme *);
 extern Lexeme *car(Lexeme *);
 extern Lexeme *cdr(Lexeme *);
+extern Lexeme *setCar(Lexeme *, Lexeme *);
+extern Lexeme *setCdr(Lexeme *, Lexeme *);
 extern Lexeme *cadr(Lexeme *);
 extern Lexeme *cddr(Lexeme *);
