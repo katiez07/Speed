@@ -39,7 +39,7 @@ Lexeme *newEnv(){
 Lexeme *insertEnv(Lexeme *env, Lexeme *id, Lexeme *val){
 	setCar(car(env), cons(I, id, car(car(env))));
 	setCdr(car(env), cons(V, val, cdr(car(env))));
-	return env;
+	return val;
 }
 
 Lexeme *extendEnv(Lexeme *env, Lexeme *listVars, Lexeme *listVals){
@@ -58,7 +58,7 @@ Lexeme *getVar(Lexeme *env, Lexeme *var){
 		vals = cdr(car(env));
 		while (vars != NULL){
 			if (varMatch(car(vars), var))
-				return car(vars);
+				return car(vals);
 			vars = cdr(vars);
 			vals = cdr(vals);
 		}
@@ -93,7 +93,7 @@ Lexeme *updateVar(Lexeme *env, Lexeme *var, Lexeme *val){
 void printLocalEnv(Lexeme *env){
 	Lexeme *vars = car(car(env));
 	Lexeme *vals = cdr(car(env));
-	printf("Local env:\n----------\n");
+	printf("Local env\n---------\n");
 		while (vars != NULL){
 		printf("%s:", car(vars)->id);
 		printVal(car(vals));
@@ -101,6 +101,7 @@ void printLocalEnv(Lexeme *env){
 		vars = cdr(vars);
 		vals = cdr(vals);
 	}
+	printf("\n");
 }
 
 void printEnv(Lexeme *env){
@@ -108,7 +109,7 @@ void printEnv(Lexeme *env){
 	Lexeme *vals;
 	int envNo = 0;
 	while (env != NULL){
-		printf("\nEnv %d\n-----\n", envNo);
+		printf("Env %d\n-----\n", envNo);
 		vars = car(car(env));
 		vals = cdr(car(env));
 		while (vars != NULL){
@@ -120,8 +121,8 @@ void printEnv(Lexeme *env){
 		}
 		env = cdr(env);
 		envNo++;
+		printf("\n");
 	}
-	printf("\n");
 }
 
 /*

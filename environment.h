@@ -7,6 +7,7 @@
 
 extern Lexeme *newEnv();
 extern Lexeme *insertEnv(Lexeme *, Lexeme *, Lexeme *);
+extern Lexeme *extendEnv(Lexeme *, Lexeme *, Lexeme *);
 extern Lexeme *getVar(Lexeme *, Lexeme *);
 extern Lexeme *updateVar(Lexeme *, Lexeme *, Lexeme *);
 extern void printLocalEnv(Lexeme *);
