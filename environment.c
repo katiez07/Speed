@@ -80,8 +80,13 @@ Lexeme *updateVar(Lexeme *env, Lexeme *var, Lexeme *val){
 	exit(-1);
 }
 
-
+/*
 int main(){
 	Lexeme *env = newEnv();
 	insertEnv(env, NULL, NULL);
+	Lexeme *x = newLexeme(ID);
+	Lexeme *y = newIntLexeme(INTEGER, 4);
+	setCar(env, x);
+	setCdr(env, y);
 }
+*/
