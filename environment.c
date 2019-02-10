@@ -17,6 +17,15 @@ int varMatch(Lexeme *a, Lexeme *b){
 	return 0;
 }
 
+void printVal(Lexeme *val){
+	if (val->type == STRING)
+		printf("%s", val->string);
+	else if (val->type == INTEGER)
+		printf("%d", val->integer);
+	else if (val->type == REAL)
+		printf("%lf", val->real);
+}
+
 
 /***
  * main environment functions
@@ -80,13 +89,45 @@ Lexeme *updateVar(Lexeme *env, Lexeme *var, Lexeme *val){
 	exit(-1);
 }
 
-/*
+void printLocalEnv(Lexeme *env){
+	Lexeme *vars = car(car(env));
+	Lexeme *vals = cdr(car(env));
+	printf("Local env:\n----------\n");
+		while (vars != NULL){
+		printf("%s:", car(vars)->id);
+		printVal(car(vals));
+		printf("\n");
+		vars = cdr(vars);
+		vals = cdr(vals);
+	}
+}
+
+void printEnv(Lexeme *env){
+	Lexeme *vars;
+	Lexeme *vals;
+	int envNo = 0;
+	while (env != NULL){
+		printf("\nEnv %d\n-----\n", envNo);
+		vars = car(car(env));
+		vals = cdr(car(env));
+		while (vars != NULL){
+			printf("%s:", car(vars)->id);
+			printVal(car(vals));
+			printf("\n");
+			vars = cdr(vars);
+			vals = cdr(vals);
+		}
+		env = cdr(env);
+		envNo++;
+	}
+}
+
+
 int main(){
 	Lexeme *env = newEnv();
-	insertEnv(env, NULL, NULL);
 	Lexeme *x = newLexeme(ID);
 	Lexeme *y = newIntLexeme(INTEGER, 4);
-	setCar(env, x);
-	setCdr(env, y);
+	insertEnv(env, x, y);
+	printEnv(env);
 }
-*/
+
