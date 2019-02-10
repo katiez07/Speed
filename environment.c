@@ -124,7 +124,7 @@ void printEnv(Lexeme *env){
 	printf("\n");
 }
 
-
+/*
 int main(){
 	Lexeme *env0 = newEnv();
 	Lexeme *x = newIDLexeme(ID, "x");
@@ -135,4 +135,4 @@ int main(){
 	insertEnv(env0, y, yval);
 	printEnv(env0);
 }
-
+*/
