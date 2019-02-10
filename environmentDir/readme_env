@@ -1,0 +1,26 @@
+ReadMe, specific to the Environment Milestone
+---------------------------------------------
+
+Lexeme *newEnv()
+constructs a new environment, with this form:
+            ENV
+       TAB       NULL
+    NULL NULL
+
+Lexeme *insertEnv(Lexeme *env, Lexeme *id, Lexeme *val)
+inserts id and val at the head of the top-level parallel lists for them in env
+
+Lexeme *extendEnv(Lexeme *env, Lexeme *listVars, Lexeme *listVals)
+creates another environment with parallel lists listVars and listVals, sets the cdr of this new environment as the old environment and returns this new environment
+
+Lexeme *getVar(Lexeme *env, Lexeme *var)
+looks up the first occurence (most local to global) of the variable and returns its value lexeme
+
+Lexeme *updateVar(Lexeme *env, Lexeme *var, Lexeme *val)
+finds the first occurrence and changes its value to val, returns the old value
+
+void printLocalEnv(Lexeme *env)
+prints the local environment
+
+void prinEnv(Lexeme *env)
+prints the entire environment structure
