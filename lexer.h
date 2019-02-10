@@ -67,8 +67,12 @@ extern Lexeme *lex();
 extern void skipWhiteSpace();
 
 extern Lexeme *newLexeme(types);
+extern Lexeme *newStringLexeme(types, char *);
+extern Lexeme *newIntLexeme(types, int);
+extern Lexeme *newRealLexeme(types, double);
+extern Lexeme *newIDLexeme(types, char *);
 
-extern Lexeme *cons(Lexeme *, Lexeme *, Lexeme *);
+extern Lexeme *cons(types, Lexeme *, Lexeme *);
 extern Lexeme *car(Lexeme *);
 extern Lexeme *cdr(Lexeme *);
 extern Lexeme *setCar(Lexeme *, Lexeme *);

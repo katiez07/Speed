@@ -107,10 +107,11 @@ Lexeme *newIDLexeme(types lexemeType, char *id){
  * cons, car, cdr functions
  */
 
-Lexeme *cons(Lexeme *tree, Lexeme *left, Lexeme *right){
-	tree->left = left;
-	tree->right = right;
-	return tree;
+Lexeme *cons(types type, Lexeme *left, Lexeme *right){
+	Lexeme *l = newLexeme(type);
+	l->left = left;
+	l->right = right;
+	return l;
 }
 
 Lexeme *car(Lexeme *tree){
@@ -119,6 +120,16 @@ Lexeme *car(Lexeme *tree){
 
 Lexeme *cdr(Lexeme *tree){
 	return tree->right;
+}
+
+Lexeme *setCar(Lexeme *tree, Lexeme *l){
+	tree->left = l;
+	return tree;
+}
+
+Lexeme *setCdr(Lexeme *tree, Lexeme *l){
+	tree->right = l;
+	return tree;
 }
 
 Lexeme *cadr(Lexeme *tree){
