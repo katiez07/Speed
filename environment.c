@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "lexer.h"
+#include "environment.h"
 
 /***
  * helper functions
@@ -120,14 +121,18 @@ void printEnv(Lexeme *env){
 		env = cdr(env);
 		envNo++;
 	}
+	printf("\n");
 }
 
 
 int main(){
-	Lexeme *env = newEnv();
-	Lexeme *x = newLexeme(ID);
-	Lexeme *y = newIntLexeme(INTEGER, 4);
-	insertEnv(env, x, y);
-	printEnv(env);
+	Lexeme *env0 = newEnv();
+	Lexeme *x = newIDLexeme(ID, "x");
+	Lexeme *xval = newIntLexeme(INTEGER, 4);
+	Lexeme *y = newIDLexeme(ID, "y");
+	Lexeme *yval = newIntLexeme(INTEGER, 2);
+	insertEnv(env0, x, xval);
+	insertEnv(env0, y, yval);
+	printEnv(env0);
 }
 

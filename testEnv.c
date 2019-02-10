@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "lexer.h"
+#include "environment.h"
 
 int main(){
 	
