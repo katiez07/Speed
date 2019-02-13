@@ -119,9 +119,12 @@ void matchNoAdvance(types type){
 	}
 }
 
-void match(types type){
+Lexeme *match(types type){
+	Lexeme *matched;
 	matchNoAdvance(type);
+	matched = curlex;
 	advance();
+	return matched;
 }
 
 
@@ -216,8 +219,7 @@ Lexeme *program(){
 		p = program();
 	else
 		p = NULL;
-	Lexeme *program = newLexeme(PROGRAM);
-	return cons(program, ex, prog);
+	return cons(PROGRAM, ex, prog);
 }
 
 Lexeme *expr(){
@@ -253,8 +255,7 @@ Lexeme *args(){
 		more = args();
 	else
 		more = NULL;
-	Lexeme *args = newLexeme(ARGS);
-	return cons(args, u, more);
+	return cons(ARGS, u, more);
 }
 
 Lexeme *optArgs(){
@@ -264,15 +265,22 @@ Lexeme *optArgs(){
 		return NULL;
 }
 
-void params(){
-	match(ID);
+Lexeme *params(){
+	Lexeme *u;
+	Lexeme *more;
+	u = match(ID);
 	if (paramsPending())
-		params();
+		more = params();
+	else
+		more = NULL;
+	return cons(PARAMS, u, more);
 }
 
-void optParams(){
+Lexeme *optParams(){
 	if (paramsPending())
-		params();
+		return params();
+	else
+		return NULL;
 }
 
 Lexeme *ifStatement(){
@@ -290,10 +298,7 @@ Lexeme *ifStatement(){
 		body = program();
 		match(CBRACE);
 	}
-	Lexeme *glue = newLexeme(IFELSETOP);
-	Lexeme *ifstat = newLexeme(IFSTATEMENT);
-	ifstat = cons(ifstat, cond, body);
-	return cons(glue, ifstat, another);
+	return cons(IFELSETOP, cons(IFSTATEMENT, cond, body), another);
 }
 
 Lexeme *elseStatement(){
@@ -309,12 +314,9 @@ Lexeme *elseStatement(){
 		body = program();
 		match(CBRACE);
 	}
-	Lexeme *glue = newLexeme(IFELSETOP);
-	Lexeme *elsestat = newLexeme(ELSESTATEMENT);
 	cond = NULL;
 	another = NULL;
-	elsestat = cons(elsestat, cond, body);
-	return cons(glue, elsestat, another);
+	return cons(IFELSETOP, cons(ELSESTATEMENT, cond, body), another);
 }
 
 Lexeme *optElseStatement(){
