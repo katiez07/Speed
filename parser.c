@@ -213,13 +213,13 @@ int IDexprPending(){
 /*** calling functions ***/
 
 Lexeme *program(){
-	Lexeme *ex, *prog, *p;
-	ex = expr();
+	Lexeme *e, *p;
+	e = expr();
 	if (programPending())
 		p = program();
 	else
 		p = NULL;
-	return cons(PROGRAM, ex, prog);
+	return cons(PROGRAM, e, p);
 }
 
 Lexeme *expr(){
@@ -325,83 +325,85 @@ Lexeme *optElseStatement(){
 	return NULL;
 }
 
-void def(){
+Lexeme *def(){
 	if (structDefPending())
-		structDef();
+		return structDef();
 	else if (varDefPending())
-		varDef();
-	else if (funcDefPending())
-		funcDef();
+		return varDef();
+	else // (funcDefPending())
+		return funcDef();
 }
 
-void structDef(){
+Lexeme *structDef(){
+	Lexeme *id, *p;
 	match(STRUCT);
-	unary();
+	id = match(ID);
 	match(OBRACKET);
-	program();
+	p = program();
 	match(CBRACKET);
+	return cons(STRUCTDEF, id, p);
 }
 
-void varDef(){
+Lexeme *varDef(){
+	Lexeme *id;
 	match(VARIABLE);
-	if (exprPending()){
-		match(ID);
-		match(SEMI);
-	}
-	else {
-		unary();
-		match(SEMI);
-	}
+	id = match(ID);
+	match(SEMI);
+	return cons(VARDEF, id, NULL);
 }
 
-void funcDef(){
+Lexeme *funcDef(){
+	Lexeme *id, *params, *body;
 	match(FUNCTION);
-	match(ID);
+	id = match(ID);
 	match(OPAREN);
-	optParams();
+	params = optParams();
 	match(CPAREN);
 	match(OBRACE);
-	program();
+	body = program();
 	match(CBRACE);
+	return cons(FUNCDEF, id, cons(GLUE, params, body));
 }
 
-void returnStatement(){
+Lexeme *returnStatement(){
+	Lexeme *e;
 	match(RETURN);
-	expr();
+	e = expr();
 	match(SEMI);
+	return cons(RETURN, e, NULL);
 }
 
-void unary(){
+Lexeme *unary(){
 	if (IDexprPending()){
-		IDexpr();
+		return IDexpr();
 	}
 	else if (check(INTEGER)){
-		match(INTEGER);
+		return match(INTEGER);
 	}
 	else if (check(REAL)){
-		match(REAL);
+		return match(REAL);
 	}
 	else if (check(STRING)){
-		match(STRING);
+		return match(STRING);
 	}
 	else {
 		match(OPAREN);
-		expr();
+		return expr();
 		match(CPAREN);
 	}
 }
 
-void IDexpr(){
-	match(ID);
+Lexeme *IDexpr(){
+	Lexeme *id, *args;
+	id = match(ID);
 	if (check(OPAREN)){
 		match(OPAREN);
-		optArgs();
+		args = optArgs();
 		match(CPAREN);
 	}
-}
-
-void testIDexpr(){
-	match(ID);
+	else
+		args = NULL;
+	return cons(IDEXPR, id, args);
 }
 
 

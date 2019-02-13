@@ -41,6 +41,7 @@ typedef enum{
 	RETURNSTATEMENT,
 	UNARY,
 	IDEXPR,
+	GLUE,
 	ENV,
 	TAB,
 	I,
