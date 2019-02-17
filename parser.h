@@ -20,6 +20,6 @@ extern Lexeme *returnStatement();
 extern Lexeme *unary();
 extern Lexeme *IDexpr();
 
-extern void prettyprint(Lexeme *, FILE *);
+extern void prettyprint(Lexeme *);
 
 

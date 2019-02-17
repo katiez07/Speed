@@ -11,7 +11,7 @@ int main(int argc, char **argv){
 	if (argc < 2){
 		printf("Fatal error: too few args\n");
 	}
-
+	
 	input = fopen(argv[1], "r");
 
 	curlex = NULL;
@@ -20,7 +20,7 @@ int main(int argc, char **argv){
 	}
 
 	Lexeme *tree = program();
-	prettyprint(tree, stdout);
+	prettyprint(tree);
 
 	fclose(input);
 
