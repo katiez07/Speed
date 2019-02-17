@@ -1,0 +1,10 @@
+// failure test
+
+func main ;'  ';
+./
+
+var a;
+= ;' a 14 '; ';
+
+return a;
+/.

@@ -1,0 +1,18 @@
+ReadMe, specialized for the pretty printer
+@author Katie Zucker
+
+test1
+-----
+This is a very simple, successful test.
+
+test2
+-----
+This is a failure test.
+
+test3
+-----
+This uses my original program.txt from my grammar, which includes every rule. This test is also successful. :)
+
+run
+---
+"make run" runs the tests in this order: test1, test3, test2. This is because I didn't know how to make a failed test2 not immediately quit.
