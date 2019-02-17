@@ -1,16 +1,19 @@
+run		:	pp program.txt
 
-
-parser		:	parser.o lexer.o
-			gcc -Wall -Wextra -std=c99 -g -o parser lexer.o parser.o
+pp		:	testpp.o parser.o lexer.o
+			gcc -Wall -Wextra -std=c99 -g -o pp lexer.o parser.o testpp.o
 
 lexer.o		:	lexer.c lexer.h
 			gcc -Wall -Wextra -std=c99 -g -c lexer.c
 
-parser.o	:	lexer.c lexer.h parser.c
+parser.o	:	lexer.h parser.c parser.h
 			gcc -Wall -Wextra -std=c99 -g -c parser.c
 
+testpp.o	:	lexer.h parser.h testpp.c 
+			gcc -Wall -Wextra -std=c99 -g -c testpp.c
+
 clean		:	
-			rm lexer.o parser.o parser
+			rm lexer.o parser.o testpp.o pp
 
 test1		:	
 

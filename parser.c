@@ -406,25 +406,3 @@ Lexeme *IDexpr(){
 	return cons(IDEXPR, id, args);
 }
 
-
-/*** main ***/
-
-int main(int argc, char **argv){
-	if (argc < 2){
-		fprintf(stderr, "Fatal error: too few args\n");
-		exit(-1);
-	}
-
-	input = fopen(argv[1], "r");
-
-	curlex = NULL;
-	while (curlex == NULL){
-		curlex = lex();
-	}
-
-	program();
-
-	fclose(input);
-
-	return 0;
-}
