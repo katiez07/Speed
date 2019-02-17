@@ -90,6 +90,10 @@ void printLex(Lexeme *l){
 		printf("PROGRAM\n");
 	else if (l->type == EXPR)
 		printf("EXPR\n");
+	else if (l->type == UNARY)
+		printf("UNARY\n");
+	else if (l->type == IDEXPR)
+		printf("IDEXPR\n");
 	else if (l->type == ARGS)
 		printf("ARGS\n");
 	else if (l->type == PARAMS)
@@ -260,6 +264,8 @@ Lexeme *expr(){
 		return expr();
 		match(CPAREN);
 	}
+	else if (IDexprPending())
+		return IDexpr();
 	else
 		return args();
 }
@@ -433,7 +439,9 @@ Lexeme *IDexpr(){
 // prettyprint
 
 void prettyprint(Lexeme *tree, FILE *fp){
-	if (tree->type == ID)
+	if (tree == NULL)
+		return;
+	else if (tree->type == ID)
 		fprintf(fp, "%s", tree->id);
 	else if (tree->type == INTEGER)
 		fprintf(fp, "%d", tree->integer);
@@ -441,26 +449,31 @@ void prettyprint(Lexeme *tree, FILE *fp){
 		fprintf(fp, "%lf", tree->real);
 	else if (tree->type == STRING)
 		fprintf(fp, "%s", tree->string);
+	else if (tree->type == IDEXPR){
+		fprintf(fp, "%s ", car(tree)->id);
+		prettyprint(cdr(tree), fp);
+		fprintf(fp, "\n");
+	}
 	else if (tree->type == STRUCTDEF){
 		fprintf(fp, "struct ");
 		prettyprint(car(tree), fp);
-		fprintf(fp, "[");
+		fprintf(fp, "\n[\n");
 		prettyprint(cdr(tree), fp);
-		fprintf(fp, "]");
+		fprintf(fp, "\n]\n");
 	}
 	else if (tree->type == VARDEF){
 		fprintf(fp, "var ");
 		prettyprint(car(tree), fp);
-		fprintf(fp, "l");
+		fprintf(fp, ";\n");
 	}
 	else if (tree->type == FUNCDEF){
 		fprintf(fp, "func ");
 		prettyprint(car(tree), fp);
-		fprintf(fp, "(");
+		fprintf(fp, "( ");
 		prettyprint(car(cdr(tree)), fp);
-		fprintf(fp, ") {");
+		fprintf(fp, " ) \n{\n");
 		prettyprint(cdr(cdr(tree)), fp);
-		fprintf(fp, "}");
+		fprintf(fp, "\n}\n");
 	}
 	else if (tree->type == PARAMS){
 		fprintf(fp, " ");
@@ -487,9 +500,8 @@ void prettyprint(Lexeme *tree, FILE *fp){
 		prettyprint(cdr(car(tree)), fp);
 		fprintf(fp,"}");
 		while (tree != NULL){
-			// this part takes care of all else ifs nd else
+			// this part takes care of all else ifs and else
 			prettyprint(car(tree), fp);
-			
 			tree = cdr(tree);
 		}
 	}
@@ -519,7 +531,6 @@ void prettyprint(Lexeme *tree, FILE *fp){
 		}
 	}
 	else{
-		printf("x");
 		printLex(tree);
 	}
 }
