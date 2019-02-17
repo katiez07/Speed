@@ -430,10 +430,10 @@ Lexeme *IDexpr(){
 		match(OPAREN);
 		args = optArgs();
 		match(CPAREN);
+		return cons(FUNCCALL, id, args);
 	}
 	else
-		args = NULL;
-	return cons(IDEXPR, id, args);
+		return id;
 }
 
 // prettyprint
@@ -449,16 +449,17 @@ void prettyprint(Lexeme *tree){
 		printf("%lf", tree->real);
 	else if (tree->type == STRING)
 		printf("%s", tree->string);
-	else if (tree->type == IDEXPR){
-		printf("%s ", car(tree)->id);
+	else if (tree->type == FUNCCALL){
+		printf("%s ( ", car(tree)->id);
 		prettyprint(cdr(tree));
+		printf(" )\n");
 	}
 	else if (tree->type == STRUCTDEF){
 		printf("struct ");
 		prettyprint(car(tree));
 		printf("\n[\n");
 		prettyprint(cdr(tree));
-		printf("\n]\n");
+		printf("]\n\n");
 	}
 	else if (tree->type == VARDEF){
 		printf("var ");
@@ -472,7 +473,7 @@ void prettyprint(Lexeme *tree){
 		prettyprint(car(cdr(tree)));
 		printf(" ) \n{\n");
 		prettyprint(cdr(cdr(tree)));
-		printf("\n}\n");
+		printf("}\n\n");
 	}
 	else if (tree->type == PARAMS){
 		printf(" ");
@@ -496,7 +497,7 @@ void prettyprint(Lexeme *tree){
 			prettyprint(car(car(tree)));
 		printf(" ){\n");
 		prettyprint(cdr(car(tree)));
-		printf("\n}\n");
+		printf("}\n");
 		while (tree != NULL){
 			// this part takes care of all else ifs and else
 			prettyprint(car(tree));
@@ -506,14 +507,14 @@ void prettyprint(Lexeme *tree){
 	else if (tree->type == IFSTATEMENT){
 		printf("else if ( ");
 		prettyprint(car(tree));
-		printf(" ) {");
+		printf(" ) \n{\n");
 		prettyprint(cdr(tree));
-		printf("}");
+		printf("}\n");
 	}
 	else if (tree->type == ELSESTATEMENT){
-		printf("else {");
+		printf("else \n{\n");
 		prettyprint(cdr(tree));
-		printf("}");
+		printf("}\n");
 	}
 	else if (tree->type == RETURNSTATEMENT){
 		printf("return ");
