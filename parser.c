@@ -319,13 +319,13 @@ Lexeme *ifStatement(){
 	match(CPAREN);
 	if (exprPending()){
 		body = expr();
-		another = optElseStatement();
 	}
 	else{
 		match(OBRACE);
 		body = program();
 		match(CBRACE);
 	}
+	another = optElseStatement();
 	return cons(IFELSETOP, cons(IFSTATEMENT, cond, body), another);
 }
 
@@ -440,13 +440,13 @@ void prettyprint(Lexeme *tree){
 	if (tree == NULL)
 		return;
 	else if (tree->type == ID)
-		printf("%s", tree->id);
+		printf("%s ", tree->id);
 	else if (tree->type == INTEGER)
-		printf("%d", tree->integer);
+		printf("%d ", tree->integer);
 	else if (tree->type == REAL)
-		printf("%lf", tree->real);
+		printf("%lf ", tree->real);
 	else if (tree->type == STRING)
-		printf("\"%s\"", tree->string);
+		printf("\"%s\" ", tree->string);
 	else if (tree->type == FUNCCALL){
 		printf("%s ;' ", car(tree)->id);
 		prettyprint(cdr(tree));
@@ -496,6 +496,7 @@ void prettyprint(Lexeme *tree){
 		printf(" ';\n./\n");
 		prettyprint(cdr(car(tree)));
 		printf("/.\n");
+		tree = cdr(tree);
 		while (tree != NULL){
 			// this part takes care of all else ifs and else
 			prettyprint(car(tree));
