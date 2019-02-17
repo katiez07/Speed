@@ -136,12 +136,10 @@ void matchNoAdvance(types type){
 		printf("illegal\n");
 
 		// extra info on error
-		/*
 		printf("curlex ");
 		printLex(curlex);
 		printf("doesn't match expected ");
 		printLex(newLexeme(type));
-		*/
 
 		exit(-1);
 	}
@@ -400,7 +398,7 @@ Lexeme *returnStatement(){
 	match(RETURN);
 	e = expr();
 	match(SEMI);
-	return cons(RETURN, e, NULL);
+	return cons(RETURNSTATEMENT, e, NULL);
 }
 
 Lexeme *unary(){
@@ -448,11 +446,11 @@ void prettyprint(Lexeme *tree){
 	else if (tree->type == REAL)
 		printf("%lf", tree->real);
 	else if (tree->type == STRING)
-		printf("%s", tree->string);
+		printf("\"%s\"", tree->string);
 	else if (tree->type == FUNCCALL){
-		printf("%s ( ", car(tree)->id);
+		printf("%s ;' ", car(tree)->id);
 		prettyprint(cdr(tree));
-		printf(" )\n");
+		printf(" ';\n");
 	}
 	else if (tree->type == STRUCTDEF){
 		printf("struct ");
@@ -469,11 +467,11 @@ void prettyprint(Lexeme *tree){
 	else if (tree->type == FUNCDEF){
 		printf("func ");
 		prettyprint(car(tree));
-		printf("( ");
+		printf(";' ");
 		prettyprint(car(cdr(tree)));
-		printf(" ) \n{\n");
+		printf(" '; \n./\n");
 		prettyprint(cdr(cdr(tree)));
-		printf("}\n\n");
+		printf("/.\n\n");
 	}
 	else if (tree->type == PARAMS){
 		printf(" ");
@@ -493,11 +491,11 @@ void prettyprint(Lexeme *tree){
 	}
 	else if (tree->type == IFELSETOP){
 		// this first part takes care of top if
-		printf("if ( ");
+		printf("if ;' ");
 			prettyprint(car(car(tree)));
-		printf(" ){\n");
+		printf(" ';\n./\n");
 		prettyprint(cdr(car(tree)));
-		printf("}\n");
+		printf("/.\n");
 		while (tree != NULL){
 			// this part takes care of all else ifs and else
 			prettyprint(car(tree));
@@ -505,23 +503,21 @@ void prettyprint(Lexeme *tree){
 		}
 	}
 	else if (tree->type == IFSTATEMENT){
-		printf("else if ( ");
+		printf("else if ;' ");
 		prettyprint(car(tree));
-		printf(" ) \n{\n");
+		printf(" '; \n./\n");
 		prettyprint(cdr(tree));
-		printf("}\n");
+		printf("/.\n");
 	}
 	else if (tree->type == ELSESTATEMENT){
-		printf("else \n{\n");
+		printf("else \n./\n");
 		prettyprint(cdr(tree));
-		printf("}\n");
+		printf("/.\n");
 	}
 	else if (tree->type == RETURNSTATEMENT){
 		printf("return ");
 		prettyprint(car(tree));
-	}
-	else if (tree->type == EXPR){
-		printf("?expr?");
+		printf(";\n");
 	}
 	else if (tree->type == PROGRAM){
 		while (tree != NULL){
