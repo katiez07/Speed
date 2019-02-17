@@ -19,3 +19,7 @@ extern Lexeme *funcDef();
 extern Lexeme *returnStatement();
 extern Lexeme *unary();
 extern Lexeme *IDexpr();
+
+extern void prettyprint(Lexeme *, FILE *);
+
+

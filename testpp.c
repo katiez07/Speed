@@ -19,7 +19,8 @@ int main(int argc, char **argv){
 		curlex = lex();
 	}
 
-	program();
+	Lexeme *tree = program();
+	prettyprint(tree, stdout);
 
 	fclose(input);
 

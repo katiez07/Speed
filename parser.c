@@ -86,6 +86,30 @@ void printLex(Lexeme *l){
 			l->line);
 		exit(-1);
 	}
+	else if (l->type == PROGRAM)
+		printf("PROGRAM\n");
+	else if (l->type == EXPR)
+		printf("EXPR\n");
+	else if (l->type == ARGS)
+		printf("ARGS\n");
+	else if (l->type == PARAMS)
+		printf("PARAMS\n");
+	else if (l->type == IFELSETOP)
+		printf("IFELSETOP\n");
+	else if (l->type == IFSTATEMENT)
+		printf("IFSTATEMENT\n");
+	else if (l->type == ELSESTATEMENT)
+		printf("ELSESTATEMENT\n");
+	else if (l->type == DEF)
+		printf("DEF\n");
+	else if (l->type == STRUCTDEF)
+		printf("STRUCTDEF\n");
+	else if (l->type == VARDEF)
+		printf("VARDEF\n");
+	else if (l->type == FUNCDEF)
+		printf("FUNCDEF\n");
+	else if (l->type == RETURNSTATEMENT)
+		printf("RETURNSTATEMENT\n");
 	else{
 		printf("unknown lexeme\n");
 	}
@@ -406,3 +430,96 @@ Lexeme *IDexpr(){
 	return cons(IDEXPR, id, args);
 }
 
+// prettyprint
+
+void prettyprint(Lexeme *tree, FILE *fp){
+	if (tree->type == ID)
+		fprintf(fp, "%s", tree->id);
+	else if (tree->type == INTEGER)
+		fprintf(fp, "%d", tree->integer);
+	else if (tree->type == REAL)
+		fprintf(fp, "%lf", tree->real);
+	else if (tree->type == STRING)
+		fprintf(fp, "%s", tree->string);
+	else if (tree->type == STRUCTDEF){
+		fprintf(fp, "struct ");
+		prettyprint(car(tree), fp);
+		fprintf(fp, "[");
+		prettyprint(cdr(tree), fp);
+		fprintf(fp, "]");
+	}
+	else if (tree->type == VARDEF){
+		fprintf(fp, "var ");
+		prettyprint(car(tree), fp);
+		fprintf(fp, "l");
+	}
+	else if (tree->type == FUNCDEF){
+		fprintf(fp, "func ");
+		prettyprint(car(tree), fp);
+		fprintf(fp, "(");
+		prettyprint(car(cdr(tree)), fp);
+		fprintf(fp, ") {");
+		prettyprint(cdr(cdr(tree)), fp);
+		fprintf(fp, "}");
+	}
+	else if (tree->type == PARAMS){
+		fprintf(fp, " ");
+		while (tree != NULL){
+			prettyprint(car(tree), fp);
+			tree = cdr(tree);
+			fprintf(fp, " ");
+		}
+	}
+	else if (tree->type == ARGS){
+		fprintf(fp, " ");
+		while (tree != NULL){
+			prettyprint(car(tree), fp);
+			tree = cdr(tree);
+			fprintf(fp, " ");
+		}
+	}
+	else if (tree->type == IFELSETOP){
+		// this first part takes care of top if
+		fprintf(fp, "if ( ");
+			prettyprint(car(car(tree)), fp);
+		fprintf(fp, " )");
+		fprintf(fp, "{");
+		prettyprint(cdr(car(tree)), fp);
+		fprintf(fp,"}");
+		while (tree != NULL){
+			// this part takes care of all else ifs nd else
+			prettyprint(car(tree), fp);
+			
+			tree = cdr(tree);
+		}
+	}
+	else if (tree->type == IFSTATEMENT){
+		fprintf(fp, "else if ( ");
+		prettyprint(car(tree), fp);
+		fprintf(fp, " ) {");
+		prettyprint(cdr(tree), fp);
+		fprintf(fp, "}");
+	}
+	else if (tree->type == ELSESTATEMENT){
+		fprintf(fp, "else {");
+		prettyprint(cdr(tree), fp);
+		fprintf(fp, "}");
+	}
+	else if (tree->type == RETURNSTATEMENT){
+		fprintf(fp, "return ");
+		prettyprint(car(tree), fp);
+	}
+	else if (tree->type == EXPR){
+		printf("?expr?");
+	}
+	else if (tree->type == PROGRAM){
+		while (tree != NULL){
+			prettyprint(car(tree), fp);
+			tree = cdr(tree);
+		}
+	}
+	else{
+		printf("x");
+		printLex(tree);
+	}
+}
