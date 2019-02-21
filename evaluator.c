@@ -43,9 +43,31 @@ Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
 	char *id = car(tree)->id;
 	if (strcmp(id, "print") == 0){
 		printf("%s\n", car(cdr(tree))->string);
+		return car(cdr(tree));
 	}
+	else if (strcmp(id, "+") == 0){
+		Lexeme *walk = tree;
+		if (car(cdr(tree))->type == INTEGER){
+			int sum = 0;
+			while (walk != NULL){
+				sum += car(cdr(tree))->integer;
+				walk = cdr(walk);
+			}
+			return newIntLexeme(INTEGER, sum);
+		}
+		else{
+			double sum = 0;
+			while (walk != NULL){
+				sum += car(cdr(walk))->real;
+				walk = cdr(walk);
+			}
+			return newRealLexeme(REAL, sum);
+		}
+	}
+
 	return NULL;
 }
+
 
 
 /*
@@ -118,20 +140,4 @@ Lexeme *eval(Lexeme *tree, Lexeme *env){
 	*/
 }
 
-
-int main(int argc, char **argv){
-	input = fopen(argv[1], "r");
-	curlex = NULL;
-	while (curlex == NULL)
-		curlex = lex();
-
-	Lexeme *tree = program();
-	eval(tree, newEnv());
-
-	//printLex(tree);
-
-	fclose(input);
-
-	return 0;
-}
 
