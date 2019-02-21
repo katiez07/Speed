@@ -46,7 +46,8 @@ typedef enum{
 	ENV,
 	TAB,
 	I,
-	V
+	V, 
+	NULLVALUE
 } types;
 
 typedef struct Lexeme {

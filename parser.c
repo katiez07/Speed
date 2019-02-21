@@ -114,6 +114,20 @@ void printLex(Lexeme *l){
 		printf("FUNCDEF\n");
 	else if (l->type == RETURNSTATEMENT)
 		printf("RETURNSTATEMENT\n");
+	else if (l->type == FUNCCALL)
+		printf("FUNCCALL\n");
+	else if (l->type == GLUE)
+		printf("GLUE\n");
+	else if (l->type == ENV)
+		printf("ENV\n");
+	else if (l->type == TAB)
+		printf("TAB\n");
+	else if (l->type == I)
+		printf("I\n");
+	else if (l->type == V)
+		printf("I\n");
+	else if (l->type == NULLVALUE)
+		printf("NULLVALUE\n");
 	else{
 		printf("unknown lexeme\n");
 	}

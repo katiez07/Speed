@@ -64,7 +64,7 @@ Lexeme *getVar(Lexeme *env, Lexeme *var){
 		}
 		env = cdr(env);
 	}
-	printf("Fatal error: no variable of that id defined in a reachable environment");
+	printf("Fatal error: no variable of that id defined in a reachable environment\n");
 	exit(-1);
 }
 
@@ -125,15 +125,3 @@ void printEnv(Lexeme *env){
 	}
 }
 
-/*
-int main(){
-	Lexeme *env0 = newEnv();
-	Lexeme *x = newIDLexeme(ID, "x");
-	Lexeme *xval = newIntLexeme(INTEGER, 4);
-	Lexeme *y = newIDLexeme(ID, "y");
-	Lexeme *yval = newIntLexeme(INTEGER, 2);
-	insertEnv(env0, x, xval);
-	insertEnv(env0, y, yval);
-	printEnv(env0);
-}
-*/

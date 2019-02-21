@@ -1,6 +1,6 @@
 
-pp		:	testpp.o parser.o lexer.o
-			gcc -Wall -Wextra -std=c99 -g -o pp lexer.o parser.o testpp.o
+eval		:	evaluator.o environment.o parser.o lexer.o
+			gcc -Wall -Wextra -std=c99 -g -o eval lexer.o parser.o environment.o evaluator.o
 
 lexer.o		:	lexer.c lexer.h
 			gcc -Wall -Wextra -std=c99 -g -c lexer.c
@@ -8,29 +8,20 @@ lexer.o		:	lexer.c lexer.h
 parser.o	:	lexer.h parser.c parser.h
 			gcc -Wall -Wextra -std=c99 -g -c parser.c
 
-testpp.o	:	lexer.h parser.h testpp.c 
-			gcc -Wall -Wextra -std=c99 -g -c testpp.c
+environment.o	:	lexer.h environment.h environment.c
+			gcc -Wall -Wextra -std=c99 -g -c environment.c
+
+evaluator.o	:	lexer.h parser.h environment.h environment.c evaluator.h evaluator.c
+			gcc -Wall -Wextra -std=c99 -g -c evaluator.c
 
 clean		:	
-			rm lexer.o parser.o testpp.o pp
+			rm lexer.o parser.o environment.o evaluator.o eval 
 
 run		:	
-			make test1
-			make test3
-			make test2
 
 test1		:	
-			./pp test1.spd > test1.pp.1
-			./pp test1.pp.1 > test1.pp.2
-			diff test1.pp.1 test1.pp.2
 
 test2		:	
-			./pp test2.spd > test2.pp.1
-			./pp test2.pp.1 > test2.pp.2
-			diff test2.pp.1 test2.pp.2
 
 test3		:	
-			./pp test3.spd > test3.pp.1
-			./pp test3.pp.1 > test3.pp.2
-			diff test3.pp.1 test3.pp.2
 
