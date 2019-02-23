@@ -18,7 +18,7 @@ speed.o		:	lexer.h parser.h environment.h evaluator.h speed.c
 			gcc -Wall -Wextra -std=c99 -g -c speed.c
 
 clean		:	
-			rm lexer.o parser.o environment.o evaluator.o eval 
+			rm lexer.o parser.o environment.o evaluator.o speed.o eval 
 
 run		:	
 

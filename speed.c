@@ -19,5 +19,16 @@ int main(int args, char **argv){
 	eval(tree, newEnv());
 	fclose(input);
 
+	//printf("%d\n", eval(tree, newEnv())->integer);
+	//printLex(eval(tree, newEnv()));
+
+	/*
+	Lexeme *arg1 = newIntLexeme(INTEGER, 2);
+	Lexeme *arg2 = newIntLexeme(INTEGER, 3);
+	Lexeme *id = newIDLexeme(ID, "+");
+	Lexeme *plusfunc = cons(FUNCCALL, id, cons(ARGS, arg1, cons(ARGS, arg2, NULL)));
+	//printf("%d\n", eval(plusfunc, newEnv())->integer);
+	*/
+
 	return 0;
 }
