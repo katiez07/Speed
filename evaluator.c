@@ -57,7 +57,7 @@ Lexeme *evalPrint(Lexeme *args, Lexeme *env){
 }
 
 Lexeme *evalPlus(Lexeme *tree, Lexeme *env){
-	Lexeme *walk = cdr(tree);
+	Lexeme *walk = evalArgs(cdr(tree), env);
 	if (car(walk)->type == INTEGER){
 		int sum = 0;
 		while (walk != NULL){
@@ -66,7 +66,7 @@ Lexeme *evalPlus(Lexeme *tree, Lexeme *env){
 		}
 		return newIntLexeme(INTEGER, sum);
 	}
-	else{
+	else if (car(walk)->type == REAL){
 		double sum = 0.0;
 		while (walk != NULL){
 			sum += car(walk)->real;
@@ -74,11 +74,14 @@ Lexeme *evalPlus(Lexeme *tree, Lexeme *env){
 		}
 		return newRealLexeme(REAL, sum);
 	}
-	return NULL;
+	else if (car(walk)->type == FUNCCALL){
+		Lexeme *newArgs = evalArgs(walk, env);
+		return evalPlus(cons(GLUE, NULL, newArgs), env);
+	}
 }
 
 Lexeme *evalMinus(Lexeme *tree, Lexeme *env){
-	Lexeme *walk = cdr(tree);
+	Lexeme *walk = evalArgs(cdr(tree), env);
 	if (car(walk)->type == INTEGER){
 		int sum = car(walk)->integer;
 		walk = cdr(walk);
@@ -88,17 +91,74 @@ Lexeme *evalMinus(Lexeme *tree, Lexeme *env){
 		}
 		return newIntLexeme(INTEGER, sum);
 	}
-	else{
+	else if (car(walk)->type == REAL){
 		double sum = car(walk)->real;
 		walk = cdr(walk);
 		while (walk != NULL){
-			sum += car(walk)->real;
+			sum -= car(walk)->real;
 			walk = cdr(walk);
 		}
 		return newRealLexeme(REAL, sum);
 	}
+	else if (car(walk)->type == FUNCCALL){
+		Lexeme *newArgs = evalArgs(walk, env);
+		return evalMinus(cons(GLUE, NULL, newArgs), env);
+	}
+}
+
+Lexeme *evalTimes(Lexeme *tree, Lexeme *env){
+	Lexeme *walk = evalArgs(cdr(tree), env);
+	if (car(walk)->type == INTEGER){
+		int sum = car(walk)->integer;
+		walk = cdr(walk);
+		while (walk != NULL){
+			sum *= car(walk)->integer;
+			walk = cdr(walk);
+		}
+		return newIntLexeme(INTEGER, sum);
+	}
+	else if (car(walk)->type == REAL){
+		double sum = car(walk)->real;
+		walk = cdr(walk);
+		while (walk != NULL){
+			sum *= car(walk)->real;
+			walk = cdr(walk);
+		}
+		return newRealLexeme(REAL, sum);
+	}
+	else if (car(walk)->type == FUNCCALL){
+		Lexeme *newArgs = evalArgs(walk, env);
+		return evalTimes(cons(GLUE, NULL, newArgs), env);
+	}
+}
+
+Lexeme *evalDivide(Lexeme *tree, Lexeme *env){
+	Lexeme *walk = evalArgs(cdr(tree), env);
+	if (car(walk)->type == INTEGER){
+		int sum = car(walk)->integer;
+		walk = cdr(walk);
+		while (walk != NULL){
+			sum /= car(walk)->integer;
+			walk = cdr(walk);
+		}
+		return newIntLexeme(INTEGER, sum);
+	}
+	else if (car(walk)->type == REAL){
+		double sum = car(walk)->real;
+		walk = cdr(walk);
+		while (walk != NULL){
+			sum /= car(walk)->real;
+			walk = cdr(walk);
+		}
+		return newRealLexeme(REAL, sum);
+	}
+	else if (car(walk)->type == FUNCCALL){
+		Lexeme *newArgs = evalArgs(walk, env);
+		return evalDivide(cons(GLUE, NULL, newArgs), env);
+	}
 	return NULL;
 }
+
 
 Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
 	char *id = car(tree)->id;
@@ -111,6 +171,10 @@ Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
 		return evalPlus(tree, env);
 	else if (strcmp(id, "-") == 0)
 		return evalMinus(tree, env);
+	else if (strcmp(id, "*") == 0)
+		return evalTimes(tree, env);
+	else if (strcmp(id, "/") == 0)
+		return evalDivide(tree, env);
 
 	return NULL;
 }
@@ -126,26 +190,37 @@ Lexeme *evalVarDef(Lexeme *env, Lexeme *var){
 	insertEnv(env, car(var), lnull);
 }
 
-Lexeme *evalArgs(Lexeme *tree, Lexeme *env){
+Lexeme *evalArgs(Lexeme *tree, Lexeme *env){ 
+	if (tree == NULL)
+		return NULL;
+	Lexeme *thing = car(tree);
+	Lexeme *l = NULL;
+	if (thing->type == INTEGER)
+		l = thing;
+	else if (thing->type == REAL)
+		l = thing;
+	else if (thing->type == STRING)
+		l = thing;
+	else if (thing->type == ID){
+		// lookup var in correct env
+	}
+	else if (thing->type == FUNCCALL){
+		l = eval(thing, env);
+	}
 
+	return cons(ARGS, l, evalArgs(cdr(tree), env));
 }
 
 Lexeme *evalFuncCall(Lexeme *tree, Lexeme *env){
-	// temp strcmp version
 	if (isBuiltIn(tree))
 		return evalBuiltIn(tree, env);
-	/*
 	Lexeme *closure = getVar(env, car(tree));
 	Lexeme *args = evalArgs(cdr(tree), env);
-	//if (isBuiltIn(closure))
-	//	return evalBuiltIn(tree, closure);
 	Lexeme *senv = car(closure);
 	Lexeme *params = getParams(closure);
 	Lexeme *eenv = extendEnv(senv, params, args);
 	Lexeme *body = getBody(closure);
 	return eval(body, eenv);
-	*/
-	return NULL;
 }
 
 Lexeme *eval(Lexeme *tree, Lexeme *env){
@@ -158,18 +233,6 @@ Lexeme *eval(Lexeme *tree, Lexeme *env){
 
 	if (tree == NULL)
 		return NULL;
-/*
-	else if (tree->type == ID)
-		return tree->id;
-	else if (tree->type == INTEGER)
-		return tree->integer;
-	else if (tree->type == REAL)
-		return tree->real;
-	else if (tree->type == STRING)
-		return tree->string;
-	else if (tree->type == NULLVALUE)
-		return NULL;
-*/
 	else if (tree->type == PROGRAM){
 		eval(car(tree), env);
 		eval(cdr(tree), env);
@@ -177,6 +240,8 @@ Lexeme *eval(Lexeme *tree, Lexeme *env){
 	}
 	else if (tree->type == FUNCCALL)
 		return evalFuncCall(tree, env);
+	else if (tree->type == VARDEF)
+		return evalVarDef(tree, env);
 	else{
 		//printLex(tree);
 		return NULL;

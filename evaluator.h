@@ -5,3 +5,4 @@
 #include <ctype.h>
 
 Lexeme *eval(Lexeme *, Lexeme *);
+Lexeme *evalArgs(Lexeme *, Lexeme *);

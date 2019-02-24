@@ -1,0 +1,11 @@
+print ;' "eval(1+2): " ';
+print ;' + ;' 1 2 '; ';
+println ;'  ';
+print ;' "eval(1-2): " ';
+print ;' - ;' 1 2 '; ';
+println ;'  ';
+print ;' "eval(1*2): " ';
+print ;' * ;' 1 2 '; ';
+println ;'  ';
+print ;' "eval(1/2): " ';
+println ;'  ';
