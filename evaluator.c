@@ -49,11 +49,7 @@ Lexeme *evalPrint(Lexeme *args, Lexeme *env){
 	else if (args->type == REAL)
 		printf("%lf", args->real);
 	else if (args->type == FUNCCALL){
-		Lexeme *l = eval(args, env);
-		printLex(l);
-		//Lexeme *l2 = newIntLexeme(INTEGER, 5);
-		evalPrint(l, env);
-		//evalPrint(l2, env);
+		evalPrint(eval(args, env), env);
 	}
 	else
 		printLex(args);
@@ -68,7 +64,6 @@ Lexeme *evalPlus(Lexeme *tree, Lexeme *env){
 			sum += car(walk)->integer;
 			walk = cdr(walk);
 		}
-		printf("yes");
 		return newIntLexeme(INTEGER, sum);
 	}
 	else{
@@ -84,6 +79,25 @@ Lexeme *evalPlus(Lexeme *tree, Lexeme *env){
 
 Lexeme *evalMinus(Lexeme *tree, Lexeme *env){
 	Lexeme *walk = cdr(tree);
+	if (car(walk)->type == INTEGER){
+		int sum = car(walk)->integer;
+		walk = cdr(walk);
+		while (walk != NULL){
+			sum -= car(walk)->integer;
+			walk = cdr(walk);
+		}
+		return newIntLexeme(INTEGER, sum);
+	}
+	else{
+		double sum = car(walk)->real;
+		walk = cdr(walk);
+		while (walk != NULL){
+			sum += car(walk)->real;
+			walk = cdr(walk);
+		}
+		return newRealLexeme(REAL, sum);
+	}
+	return NULL;
 }
 
 Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
@@ -93,9 +107,10 @@ Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
 	}
 	else if (strcmp(id, "println") == 0)
 		printf("\n");
-	else if (strcmp(id, "+") == 0){
+	else if (strcmp(id, "+") == 0)
 		return evalPlus(tree, env);
-	}
+	else if (strcmp(id, "-") == 0)
+		return evalMinus(tree, env);
 
 	return NULL;
 }
