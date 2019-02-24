@@ -21,7 +21,8 @@ int isBuiltIn(Lexeme *f){
 		|| strcmp(id, "*") == 0
 		|| strcmp(id, "/") == 0
 		|| strcmp(id, "print") == 0
-		|| strcmp(id, "println") == 0)
+		|| strcmp(id, "println") == 0
+		|| strcmp(id, "=") == 0)
 		return 1;
 	return 0;
 	return 1;
@@ -159,6 +160,14 @@ Lexeme *evalDivide(Lexeme *tree, Lexeme *env){
 	return NULL;
 }
 
+Lexeme *evalAssign(Lexeme *tree, Lexeme *env){
+	printEnv(env);
+	printLex(car(tree));
+	printLex(car(cdr(tree)));
+	//return updateVar(env, car(tree), evalArgs(cdr(tree), env));
+	return NULL;
+}
+
 
 Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
 	char *id = car(tree)->id;
@@ -175,6 +184,11 @@ Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
 		return evalTimes(tree, env);
 	else if (strcmp(id, "/") == 0)
 		return evalDivide(tree, env);
+	else if (strcmp(id, "=") == 0){
+		return evalAssign(tree, env);
+	}
+	else 
+		printLex(car(tree));
 
 	return NULL;
 }
@@ -185,9 +199,18 @@ Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
  * more eval functions
  */
 
-Lexeme *evalVarDef(Lexeme *env, Lexeme *var){
+Lexeme *evalStructDef(Lexeme *tree, Lexeme *env){
+
+}
+
+Lexeme *evalVarDef(Lexeme *tree, Lexeme *env){
 	Lexeme *lnull = newLexeme(NULLVALUE);
-	insertEnv(env, car(var), lnull);
+       	insertEnv(env, car(tree), lnull);
+	return tree;
+}
+
+Lexeme *evalFuncDef(Lexeme *tree, Lexeme *env){
+
 }
 
 Lexeme *evalArgs(Lexeme *tree, Lexeme *env){ 
@@ -202,7 +225,7 @@ Lexeme *evalArgs(Lexeme *tree, Lexeme *env){
 	else if (thing->type == STRING)
 		l = thing;
 	else if (thing->type == ID){
-		// lookup var in correct env
+		l = getVar(env, thing);
 	}
 	else if (thing->type == FUNCCALL){
 		l = eval(thing, env);
