@@ -49,11 +49,15 @@ Lexeme *evalPrint(Lexeme *args, Lexeme *env){
 		printf("%d", args->integer);
 	else if (args->type == REAL)
 		printf("%lf", args->real);
-	else if (args->type == FUNCCALL){
-		evalPrint(eval(args, env), env);
+	else if (args->type == NULLVALUE)
+		printf("NULL");
+	else if (args->type == ID){
+		evalPrint(evalID(args, env), env);
 	}
-	else
-		printLex(args);
+	else if (args->type == FUNCCALL)
+		evalPrint(car(eval(args, env)), env);
+	//else
+		//printLex(args);
 	return args;
 }
 
@@ -161,19 +165,17 @@ Lexeme *evalDivide(Lexeme *tree, Lexeme *env){
 }
 
 Lexeme *evalAssign(Lexeme *tree, Lexeme *env){
-	printEnv(env);
-	printLex(car(tree));
-	printLex(car(cdr(tree)));
-	//return updateVar(env, car(tree), evalArgs(cdr(tree), env));
-	return NULL;
+	if (tree == NULL)
+		return NULL;
+	updateVar(env, car(cdr(tree)), car(evalArgs(cdr(cdr(tree)), env)));
+	return tree;
 }
 
 
 Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
 	char *id = car(tree)->id;
-	if (strcmp(id, "print") == 0){
+	if (strcmp(id, "print") == 0)
 		return evalPrint(car(cdr(tree)), env);
-	}
 	else if (strcmp(id, "println") == 0)
 		printf("\n");
 	else if (strcmp(id, "+") == 0)
@@ -214,7 +216,7 @@ Lexeme *evalFuncDef(Lexeme *tree, Lexeme *env){
 }
 
 Lexeme *evalArgs(Lexeme *tree, Lexeme *env){ 
-	if (tree == NULL)
+	if (tree == NULL || car(tree) == NULL)
 		return NULL;
 	Lexeme *thing = car(tree);
 	Lexeme *l = NULL;
@@ -225,13 +227,17 @@ Lexeme *evalArgs(Lexeme *tree, Lexeme *env){
 	else if (thing->type == STRING)
 		l = thing;
 	else if (thing->type == ID){
-		l = getVar(env, thing);
+		l = evalID(thing, env);
 	}
 	else if (thing->type == FUNCCALL){
 		l = eval(thing, env);
 	}
 
 	return cons(ARGS, l, evalArgs(cdr(tree), env));
+}
+
+Lexeme *evalID(Lexeme *tree, Lexeme *env){
+	return getVar(env, tree);
 }
 
 Lexeme *evalFuncCall(Lexeme *tree, Lexeme *env){

@@ -116,6 +116,8 @@ void printLex(Lexeme *l){
 		printf("RETURNSTATEMENT\n");
 	else if (l->type == FUNCCALL)
 		printf("FUNCCALL\n");
+	else if (l->type == ARGS)
+		printf("ARGS\n");
 	else if (l->type == GLUE)
 		printf("GLUE\n");
 	else if (l->type == ENV)

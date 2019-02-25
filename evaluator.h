@@ -6,3 +6,4 @@
 
 Lexeme *eval(Lexeme *, Lexeme *);
 Lexeme *evalArgs(Lexeme *, Lexeme *);
+Lexeme *evalID(Lexeme *, Lexeme *);

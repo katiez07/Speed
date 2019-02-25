@@ -19,12 +19,16 @@ int varMatch(Lexeme *a, Lexeme *b){
 }
 
 void printVal(Lexeme *val){
-	if (val->type == STRING)
+	if (val == NULL)
+		return;
+	else if (val->type == STRING)
 		printf("%s", val->string);
 	else if (val->type == INTEGER)
 		printf("%d", val->integer);
 	else if (val->type == REAL)
 		printf("%lf", val->real);
+	else if (val->type == NULLVALUE)
+		printf("NULLVALUE");
 }
 
 
