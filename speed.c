@@ -11,6 +11,11 @@
 
 
 int main(int args, char **argv){
+	if (args < 2){
+		printf("fatal error: too few args for eval\n");
+		exit(-1);
+	}
+
 	input = fopen(argv[1], "r");
 	curlex = NULL;
 	while (curlex == NULL)

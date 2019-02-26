@@ -21,5 +21,5 @@ extern Lexeme *unary();
 extern Lexeme *IDexpr();
 
 extern void prettyprint(Lexeme *);
-
+extern void printLex(Lexeme *);
 

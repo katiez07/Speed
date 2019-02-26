@@ -88,6 +88,7 @@ Lexeme *evalPlus(Lexeme *tree, Lexeme *env){
 		Lexeme *newArgs = evalArgs(walk, env);
 		return evalPlus(cons(GLUE, NULL, newArgs), env);
 	}
+	return NULL;
 }
 
 Lexeme *evalMinus(Lexeme *tree, Lexeme *env){
@@ -114,6 +115,7 @@ Lexeme *evalMinus(Lexeme *tree, Lexeme *env){
 		Lexeme *newArgs = evalArgs(walk, env);
 		return evalMinus(cons(GLUE, NULL, newArgs), env);
 	}
+	return NULL;
 }
 
 Lexeme *evalTimes(Lexeme *tree, Lexeme *env){
@@ -140,6 +142,7 @@ Lexeme *evalTimes(Lexeme *tree, Lexeme *env){
 		Lexeme *newArgs = evalArgs(walk, env);
 		return evalTimes(cons(GLUE, NULL, newArgs), env);
 	}
+	return NULL;
 }
 
 Lexeme *evalDivide(Lexeme *tree, Lexeme *env){
@@ -209,9 +212,11 @@ Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
  * more eval functions
  */
 
+/*
 Lexeme *evalStructDef(Lexeme *tree, Lexeme *env){
 
 }
+*/
 
 Lexeme *evalVarDef(Lexeme *tree, Lexeme *env){
 	Lexeme *lnull = newLexeme(NULLVALUE);
