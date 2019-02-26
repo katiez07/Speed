@@ -60,7 +60,9 @@ Lexeme *evalPrint(Lexeme *args, Lexeme *env){
 	}
 	else if (args->type == RETURNSTATEMENT){
 		evalPrint(eval(args, env), env);
-	}
+       	}
+	else if (args->type == ARRCALL)
+		evalPrint(eval(args, env), env);
 	//else
 		//printLex(args);
 	return args;
@@ -249,10 +251,12 @@ Lexeme *evalArrCall(Lexeme *tree, Lexeme *env){
 	Lexeme *arrdef = getVar(env, car(tree));
 	Lexeme *val = cdr(arrdef);
 	int index = cdr(tree)->integer;
-	int i = 0;
-	while (i < index)
+	int i = 1;
+	while (i < index && val != NULL){
 		val = cdr(val);
-	return val;
+		i++;
+	}
+	return eval(car(val), env);
 }
 
 Lexeme *evalArgs(Lexeme *tree, Lexeme *env){ 
@@ -266,10 +270,18 @@ Lexeme *evalArgs(Lexeme *tree, Lexeme *env){
 		l = thing;
 	else if (thing->type == STRING)
 		l = thing;
+	/*
 	else if (thing->type == ID){
 		l = evalID(thing, env);
 	}
 	else if (thing->type == FUNCCALL){
+		l = eval(thing, env);
+	}
+	else if (thing->type == ARRCALL){
+		l = eval(thing, env);
+	}
+	*/
+	else{
 		l = eval(thing, env);
 	}
 
