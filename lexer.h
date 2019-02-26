@@ -48,7 +48,10 @@ typedef enum{
 	I,
 	V, 
 	CLOSURE,
-	NULLVALUE
+	NULLVALUE,
+	ARRAY,
+	ARRDEF,
+	ARRCALL
 } types;
 
 typedef struct Lexeme {

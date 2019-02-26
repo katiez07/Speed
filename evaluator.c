@@ -173,7 +173,7 @@ Lexeme *evalAssign(Lexeme *tree, Lexeme *env){
 	if (tree == NULL)
 		return NULL;
 	if (cdr(cdr(cdr(tree))) != NULL){
-		printf("fatal error: too many args to assign\n");
+		printf("fatal error near line %d: too many args to assign\n", car(tree)->line);
 		exit(-1);
 	}
 	updateVar(env, car(cdr(tree)), car(evalArgs(cdr(cdr(tree)), env)));
@@ -229,6 +229,25 @@ Lexeme *evalFuncDef(Lexeme *tree, Lexeme *env){
 	//printLex(car(cdr(cdr(cdr(cdr(clos))))));
 	//printLex(cdr(cdr(cdr(cdr(cdr(clos))))));
 	return clos;
+}
+
+Lexeme *evalArrDef(Lexeme *tree, Lexeme *env){
+	insertEnv(env, car(tree), tree);
+	return env;
+}
+
+Lexeme *evalArrCall(Lexeme *tree, Lexeme *env){
+	if (cdr(tree)->type != INTEGER){
+		printf("fatal error on line %d: array index not an integer\n", cdr(tree)->line);
+		exit(-1);
+	}
+	Lexeme *arrdef = getVar(env, car(tree));
+	Lexeme *val = cdr(arrdef);
+	int index = cdr(tree)->integer;
+	int i = 0;
+	while (i < index)
+		val = cdr(val);
+	return val;
 }
 
 Lexeme *evalArgs(Lexeme *tree, Lexeme *env){ 
@@ -309,6 +328,10 @@ Lexeme *eval(Lexeme *tree, Lexeme *env){
 		//printLex(eval(car(tree), env));
 		return eval(car(tree), env);
 	}
+	else if (tree->type == ARRDEF)
+		return evalArrDef(tree, env);
+	else if (tree->type == ARRCALL)
+		return evalArrCall(tree, env);
 	else{
 		//printLex(tree);
 		return NULL;

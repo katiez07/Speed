@@ -7,6 +7,8 @@
 #include "lexer.h"
 
 
+Lexeme *lexCBrace();
+
 char pushChar;
 int charPushed = 0;
 FILE *input;
@@ -39,11 +41,27 @@ void skipWhiteSpace(){
 	char ch = read();
 	if (ch == '\n')
 		lineno++;
-	while (isspace(ch)){
-		ch = read();
-		if (ch == '\n'){
-			lineno++;
+	while (isspace(ch)){ //|| ch == '/'){
+		/*
+		if (ch == '/'){
+			char ch0 = read();
+			if (ch0 == '/'){
+				while (ch0 != '\n')
+					ch0 = read();
+				lineno++;
+			}
+			else{
+				lexCBrace();
+			}
 		}
+		else{
+		*/
+			ch = read();
+			if (ch == '\n'){
+				lineno++;
+			}
+		//}
+		
 	}
 	pushback(ch);
 }
@@ -175,7 +193,7 @@ Lexeme *lexOBrace(){
 	}
 }
 
-Lexeme *lexCommentCBrace(){
+Lexeme *lexCBrace(){  // lexCommentCBrace
 	char ch0 = read();
 	if (ch0 == '.'){
 		return newLexeme(CBRACE);
@@ -189,7 +207,7 @@ Lexeme *lexCommentCBrace(){
 	}
 	else{
 		pushback(ch0);
-		return newLexeme(BAD_LEXEME);
+		return newIDLexeme(ID, "/");
 	}
 }
 
@@ -251,6 +269,8 @@ Lexeme *lexKeyOrID(){
 		return newLexeme(FUNCTION);
 	else if (strcmp(buff, "var") == 0)
 		return newLexeme(VARIABLE);
+	else if (strcmp(buff, "arr") == 0)
+		return newLexeme(ARRAY);
 	else 
 		return newIDLexeme(ID, buff);
 }
@@ -269,7 +289,7 @@ Lexeme *lex(){
 	else if (ch == '.')
 		return lexOBrace();
 	else if (ch == '/')
-		return lexCommentCBrace();
+		return lexCBrace();
 	else if (ch == '\"')
 		return lexString();
 	else if (isdigit(ch)){

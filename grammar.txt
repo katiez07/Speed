@@ -35,6 +35,7 @@ optElseStatement	:	else
 
 def		: 	structDef
 			| varDef
+			| arrDef
 			| funcDef
 
 structDef	:	STRUCT unary OBRACKET program CBRACKET
@@ -42,6 +43,8 @@ structDef	:	STRUCT unary OBRACKET program CBRACKET
 varDef		:	VAR ID SEMI
 
 funcDef		:	FUNC unary OPAREN optParams CPAREN OBRACE program CBRACE
+
+arrDef		:	ARR ID OBRACKET optArgs CBRACKET SEMI
 
 returnStatement	:	RETURN expr SEMI
 
@@ -53,5 +56,7 @@ unary		:	IDexpr
 
 IDexpr		:	ID
 			|| ID OPAREN optArgs CPAREN
+			|| ID OBRACKET unary CBRACKET 
+
 
 

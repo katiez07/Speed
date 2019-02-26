@@ -17,6 +17,7 @@ int funcDefPending();
 int returnStatementPending();
 int unaryPending();
 int IDexprPending();
+int arrDefPending();
 
 Lexeme *program();
 Lexeme *expr();
@@ -34,6 +35,7 @@ Lexeme *funcDef();
 Lexeme *returnStatement();
 Lexeme *unary();
 Lexeme *IDexpr();
+Lexeme *arrDef();
 
 
 void printLex(Lexeme *l){
@@ -132,6 +134,12 @@ void printLex(Lexeme *l){
 		printf("NULLVALUE\n");
 	else if (l->type == CLOSURE)
 		printf("CLOSURE\n");
+	else if (l->type == ARRAY)
+		printf("ARRAY\n");
+	else if (l->type == ARRDEF)
+		printf("ARRDEF\n");
+	else if (l->type == ARRCALL)
+		printf("ARRCALL\n");
 	else{
 		printf("unknown lexeme\n");
 	}
@@ -215,7 +223,9 @@ int defPending(){
 		return 1;
 	else if (varDefPending())
 		return 1;
-	else 
+	else if (arrDefPending())
+		return 1;
+	else
 		return funcDefPending();
 }
 
@@ -226,6 +236,10 @@ int structDefPending(){
 int varDefPending(){
 	return check(VARIABLE);
 } 
+
+int arrDefPending(){
+	return check(ARRAY);
+}
 
 int funcDefPending(){
 	return check(FUNCTION);
@@ -376,6 +390,8 @@ Lexeme *def(){
 		return structDef();
 	else if (varDefPending())
 		return varDef();
+	else if (arrDefPending())
+		return arrDef();
 	else // (funcDefPending())
 		return funcDef();
 }
@@ -409,6 +425,17 @@ Lexeme *funcDef(){
 	body = program();
 	match(CBRACE);
 	return cons(FUNCDEF, id, cons(GLUE, params, body));
+}
+
+Lexeme *arrDef(){
+	Lexeme *id, *vals;
+	match(ARRAY);
+	id = match(ID);
+	match(OBRACKET);
+	vals = optArgs();
+	match(CBRACKET);
+	match(SEMI);
+	return cons(ARRDEF, id, vals);
 }
 
 Lexeme *returnStatement(){
@@ -447,6 +474,12 @@ Lexeme *IDexpr(){
 		args = optArgs();
 		match(CPAREN);
 		return cons(FUNCCALL, id, args);
+	}
+	else if (check(OBRACKET)){
+		match(OBRACKET);
+		args = match(INTEGER);
+		match(CBRACKET);
+		return cons(ARRCALL, id, args);
 	}
 	else
 		return id;
