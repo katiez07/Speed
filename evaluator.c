@@ -55,7 +55,7 @@ Lexeme *evalPrint(Lexeme *args, Lexeme *env){
 		evalPrint(evalID(args, env), env);
 	}
 	else if (args->type == FUNCCALL)
-		evalPrint(car(eval(args, env)), env);
+		evalPrint(eval(args, env), env);
 	//else
 		//printLex(args);
 	return args;
@@ -186,9 +186,8 @@ Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
 		return evalTimes(tree, env);
 	else if (strcmp(id, "/") == 0)
 		return evalDivide(tree, env);
-	else if (strcmp(id, "=") == 0){
+	else if (strcmp(id, "=") == 0)
 		return evalAssign(tree, env);
-	}
 	else 
 		printLex(car(tree));
 
@@ -212,7 +211,9 @@ Lexeme *evalVarDef(Lexeme *tree, Lexeme *env){
 }
 
 Lexeme *evalFuncDef(Lexeme *tree, Lexeme *env){
-
+	Lexeme *clos = cons(CLOSURE, env, tree);
+	insertEnv(env, car(tree), clos);
+	return  clos;
 }
 
 Lexeme *evalArgs(Lexeme *tree, Lexeme *env){ 
@@ -245,11 +246,11 @@ Lexeme *evalFuncCall(Lexeme *tree, Lexeme *env){
 		return evalBuiltIn(tree, env);
 	Lexeme *closure = getVar(env, car(tree));
 	Lexeme *args = evalArgs(cdr(tree), env);
-	Lexeme *senv = car(closure);
+	Lexeme *senv = car(closure);  //definition env
 	Lexeme *params = getParams(closure);
-	Lexeme *eenv = extendEnv(senv, params, args);
+	Lexeme *xenv = extendEnv(senv, params, args);
 	Lexeme *body = getBody(closure);
-	return eval(body, eenv);
+	return eval(body, xenv);
 }
 
 Lexeme *eval(Lexeme *tree, Lexeme *env){

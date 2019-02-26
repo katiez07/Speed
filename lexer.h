@@ -47,6 +47,7 @@ typedef enum{
 	TAB,
 	I,
 	V, 
+	CLOSURE,
 	NULLVALUE
 } types;
 

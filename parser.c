@@ -130,6 +130,8 @@ void printLex(Lexeme *l){
 		printf("I\n");
 	else if (l->type == NULLVALUE)
 		printf("NULLVALUE\n");
+	else if (l->type == CLOSURE)
+		printf("CLOSURE\n");
 	else{
 		printf("unknown lexeme\n");
 	}
