@@ -1,0 +1,9 @@
+func f ;' a ';
+./
+	var x;
+	= ;' x + ;' a 1 '; ';
+	return x;
+/.
+
+print ;' f ;' 2 '; ';
+println ;'  ';

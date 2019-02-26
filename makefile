@@ -21,10 +21,22 @@ clean		:
 			rm lexer.o parser.o environment.o evaluator.o speed.o eval 
 
 run		:	
+			cat error4.spd
+			-./eval error4.spd
+			cat error5.spd
+			-./eval error5.spd
 
-test1		:	
+error4		:	
+			cat error4.spd
 
-test2		:	
+error4x		:	
+			-./eval error4.spd
+
+error5		:	
+			cat error5.spd
+
+error5x 	:	
+			-./eval error5.spd
 
 test3		:	
 

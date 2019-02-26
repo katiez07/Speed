@@ -51,11 +51,16 @@ Lexeme *evalPrint(Lexeme *args, Lexeme *env){
 		printf("%lf", args->real);
 	else if (args->type == NULLVALUE)
 		printf("NULL");
-	else if (args->type == ID){
+	else if (args->type == ID)
 		evalPrint(evalID(args, env), env);
-	}
-	else if (args->type == FUNCCALL)
+	else if (args->type == FUNCCALL){
+		//printLex(car(args));
+		//printLex(eval(args, env));
 		evalPrint(eval(args, env), env);
+	}
+	else if (args->type == RETURNSTATEMENT){
+		evalPrint(eval(args, env), env);
+	}
 	//else
 		//printLex(args);
 	return args;
@@ -167,6 +172,10 @@ Lexeme *evalDivide(Lexeme *tree, Lexeme *env){
 Lexeme *evalAssign(Lexeme *tree, Lexeme *env){
 	if (tree == NULL)
 		return NULL;
+	if (cdr(cdr(cdr(tree))) != NULL){
+		printf("fatal error: too many args to assign\n");
+		exit(-1);
+	}
 	updateVar(env, car(cdr(tree)), car(evalArgs(cdr(cdr(tree)), env)));
 	return tree;
 }
@@ -213,7 +222,13 @@ Lexeme *evalVarDef(Lexeme *tree, Lexeme *env){
 Lexeme *evalFuncDef(Lexeme *tree, Lexeme *env){
 	Lexeme *clos = cons(CLOSURE, env, tree);
 	insertEnv(env, car(tree), clos);
-	return  clos;
+	//printLex(cdr(cdr(cdr(clos))));
+	//printLex(car(cdr(cdr(cdr(clos)))));
+	//printLex(car(car(cdr(cdr(cdr(clos))))));
+	//printLex(cdr(cdr(cdr(cdr(clos)))));
+	//printLex(car(cdr(cdr(cdr(cdr(clos))))));
+	//printLex(cdr(cdr(cdr(cdr(cdr(clos))))));
+	return clos;
 }
 
 Lexeme *evalArgs(Lexeme *tree, Lexeme *env){ 
@@ -247,9 +262,18 @@ Lexeme *evalFuncCall(Lexeme *tree, Lexeme *env){
 	Lexeme *closure = getVar(env, car(tree));
 	Lexeme *args = evalArgs(cdr(tree), env);
 	Lexeme *senv = car(closure);  //definition env
-	Lexeme *params = getParams(closure);
+	Lexeme *params = car(cdr(cdr(closure)));
+	//printLex(car(args));
+	//printLex(car(params));
 	Lexeme *xenv = extendEnv(senv, params, args);
-	Lexeme *body = getBody(closure);
+	Lexeme *body = cdr(cdr(cdr(closure)));
+	//printLex(body);
+	//printLex(car(body));
+	//printLex(car(car(body)));
+	//printLex(cdr(body));
+	//printLex(car(cdr(body)));
+	printEnv(senv);
+	printEnv(xenv);
 	return eval(body, xenv);
 }
 
@@ -263,15 +287,28 @@ Lexeme *eval(Lexeme *tree, Lexeme *env){
 
 	if (tree == NULL)
 		return NULL;
+	else if (tree->type == INTEGER)
+		return tree;
+	else if (tree->type == REAL)
+		return tree;
+	else if (tree->type == STRING)
+		return tree;
 	else if (tree->type == PROGRAM){
 		eval(car(tree), env);
 		eval(cdr(tree), env);
 		return car(tree);
 	}
+	else if (tree->type == FUNCDEF)
+		return evalFuncDef(tree, env);
 	else if (tree->type == FUNCCALL)
 		return evalFuncCall(tree, env);
 	else if (tree->type == VARDEF)
 		return evalVarDef(tree, env);
+	else if (tree->type == RETURNSTATEMENT){
+		//printLex(car(tree));
+		//printLex(eval(car(tree), env));
+		return eval(car(tree), env);
+	}
 	else{
 		//printLex(tree);
 		return NULL;
