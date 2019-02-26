@@ -177,11 +177,25 @@ Lexeme *evalDivide(Lexeme *tree, Lexeme *env){
 Lexeme *evalAssign(Lexeme *tree, Lexeme *env){
 	if (tree == NULL)
 		return NULL;
-	if (cdr(cdr(cdr(tree))) != NULL){
-		printf("fatal error near line %d: too many args to assign\n", car(tree)->line);
+	else if (cdr(cdr(tree)) == NULL){
+		printf("fatal error near line %d: too few args to assign\n", car(tree)->line);
 		exit(-1);
 	}
-	updateVar(env, car(cdr(tree)), car(evalArgs(cdr(cdr(tree)), env)));
+	else if (cdr(cdr(cdr(tree))) != NULL){
+		// assign 3rd arg to 2nd arg index
+		Lexeme *arrdef = getVar(env, car(cdr(tree)));
+		Lexeme *var = cdr(arrdef);
+		int index = car(cdr(cdr(tree)))->integer;
+		int i = 1;
+		while (i < index && var != NULL){
+			var = cdr(var);
+			i++;
+		}
+		var->left = car(cdr(cdr(cdr(tree))));  //doesn't like when I use car on the left of the assign  //doesn't like when I use car on the left of the assign
+	}
+	else{
+		updateVar(env, car(cdr(tree)), car(evalArgs(cdr(cdr(tree)), env)));
+	}
 	return tree;
 }
 

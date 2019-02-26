@@ -25,6 +25,8 @@ run		:
 			-./eval error4.spd
 			cat error5.spd
 			-./eval error5.spd
+			cat arrays.spd
+			-./eval arrays.spd
 
 error4		:	
 			cat error4.spd
@@ -38,5 +40,9 @@ error5		:
 error5x 	:	
 			-./eval error5.spd
 
-test3		:	
+arrays		:	
+			cat arrays.spd
+
+arraysx		:
+			-./eval arrays.spd
 
