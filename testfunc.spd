@@ -1,0 +1,13 @@
+func plus1 ;' x ';
+./
+	return + ;' x 1 ';;
+/.
+
+func plus2 ;' x ';
+./
+	return plus1 ;' plus1 ;' x '; ';;
+/.
+
+print ;' plus2 ;' 2 '; ';
+
+

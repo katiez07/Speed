@@ -123,7 +123,7 @@ void printLex(Lexeme *l){
 	else if (l->type == GLUE)
 		printf("GLUE\n");
 	else if (l->type == ENV)
-		printf("ENV\n");
+		printf("ENV %p\n", l);
 	else if (l->type == TAB)
 		printf("TAB\n");
 	else if (l->type == I)
