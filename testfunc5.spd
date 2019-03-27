@@ -1,0 +1,11 @@
+func f ;' a b c ';
+./
+	func g ;' a b c ';
+	./
+		+ ;' a b c ';
+	/.
+	g ;' a b c ';
+/.
+
+print ;' f ;' 1 2 3 '; ';
+println ;'  ';
