@@ -41,6 +41,8 @@ Lexeme *getBody(Lexeme *f){
  * eval Built-Ins
  */
 Lexeme *evalPrint(Lexeme *args, Lexeme *env){
+//	printf("trying to print: ");
+//	printLex(args);
 	if (args == NULL)
 		return NULL;
 	else if (args->type == STRING)
@@ -57,7 +59,8 @@ Lexeme *evalPrint(Lexeme *args, Lexeme *env){
 		evalPrint(eval(args, env), env);
 	}
 	else if (args->type == RETURNSTATEMENT){
-		evalPrint(eval(args, env), env);
+		printf("args is return statement???\n");
+		evalPrint(car(args), env);
        	}
 	else if (args->type == ARRCALL)
 		evalPrint(eval(args, env), env);
@@ -67,14 +70,23 @@ Lexeme *evalPrint(Lexeme *args, Lexeme *env){
 }
 
 Lexeme *evalPlus(Lexeme *tree, Lexeme *env){
+	printf("INSIDE EVALPLUS\n");
+	printEnv(env);
+	printf("adding eval of these 2 args...\n");
+	printLex(car(cdr(tree)));
+	printLex(car(cdr(cdr(tree))));
 	Lexeme *walk = evalArgs(cdr(tree), env);
 	if (car(walk)->type == INTEGER){
+		printf("is integer\n");
 		int sum = 0;
 		while (walk != NULL){
 			sum += car(walk)->integer;
 			walk = evalArgs(cdr(walk), env);
 		}
-		return newIntLexeme(INTEGER, sum);
+		Lexeme *l = newIntLexeme(INTEGER, sum);
+		printf("evalPlus is returning: ");
+		printLex(l);
+		return l;
 	}
 	else if (car(walk)->type == REAL){
 		double sum = 0.0;
@@ -85,8 +97,13 @@ Lexeme *evalPlus(Lexeme *tree, Lexeme *env){
 		return newRealLexeme(REAL, sum);
 	}
 	else if (car(walk)->type == FUNCCALL){
-		Lexeme *newArgs = evalArgs(walk, env);
-		return evalPlus(cons(GLUE, NULL, newArgs), env);
+		printf("xxxxxxxxxxx\n");
+		//Lexeme *newArgs = evalArgs(walk, env);
+		//return evalPlus(cons(GLUE, NULL, newArgs), env);
+	}
+	else{
+		printf("what is this lexeme? ");
+		printLex(car(walk));
 	}
 	return NULL;
 }
@@ -268,16 +285,29 @@ Lexeme *evalArrCall(Lexeme *tree, Lexeme *env){
 Lexeme *evalArgs(Lexeme *tree, Lexeme *env){ 
 	if (tree == NULL || tree == NULL)
 		return NULL;
+//	printf("trying to eval args: ");
+//	printLex(tree);
+//	printLex(car(tree));
 	Lexeme *l = eval(car(tree), env);
+//	printLex(l);
 
 	return cons(ARGS, l, evalArgs(cdr(tree), env));
 }
 
 Lexeme *evalID(Lexeme *tree, Lexeme *env){
-	return getVar(env, tree);
+	//printf("INSIDE EVALID\n");
+	//printf("looking for: ");
+	//printLex(tree);
+	//printEnv(env);
+	Lexeme *l = getVar(env, tree);
+	//printLex(l);
+	return l;
 }
 
 Lexeme *evalFuncCall(Lexeme *tree, Lexeme *env){
+//	printf("INSIDE EVALFUNCCALL\n");
+//	printf("looking for: ");
+//	printLex(car(tree));
 	if (isBuiltIn(tree))
 		return evalBuiltIn(tree, env);
 	Lexeme *closure = getVar(env, car(tree));
@@ -296,7 +326,11 @@ Lexeme *evalFuncCall(Lexeme *tree, Lexeme *env){
 //	printLex(car(body));
 //	printf("cdr(body) is ");
 //	printLex(cdr(body));
-	return eval(body, xenv);
+	printf("eval(body, xenv)...\n");
+	Lexeme *l = eval(body, xenv);
+	printf("result of evaling body is: ");
+	printLex(l);
+	return l;
 }
 
 Lexeme *eval(Lexeme *tree, Lexeme *env){
@@ -309,9 +343,13 @@ Lexeme *eval(Lexeme *tree, Lexeme *env){
 	else if (tree->type == STRING)
 		return tree;
 	else if (tree->type == PROGRAM){
-		eval(car(tree), env);
-		eval(cdr(tree), env);
-		return car(tree);
+		Lexeme *lcar = eval(car(tree), env);
+		Lexeme *lcdr = eval(cdr(tree), env);
+		if (lcdr == NULL)
+			return lcar;
+		else	
+			return lcdr;
+		//return NULL;// car(tree);
 	}
 	else if (tree->type == FUNCDEF)
 		return evalFuncDef(tree, env);
@@ -320,8 +358,12 @@ Lexeme *eval(Lexeme *tree, Lexeme *env){
 	else if (tree->type == VARDEF)
 		return evalVarDef(tree, env);
 	else if (tree->type == RETURNSTATEMENT){
-		//printLex(car(tree));
+		printf("evaluating RETURNSTATEMENT: ");
+		printLex(tree);
+		printf("car(returnstatement) is: ");
+		printLex(car(tree));
 		Lexeme *l = eval(car(tree), env);
+		printf("evaluation of RETURNSTATEMENT is: ");
 		printLex(l);
 		//printLex(car(car(tree)));
 		return l;
