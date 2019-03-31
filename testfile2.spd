@@ -1,0 +1,13 @@
+func f ;'  ';
+./
+	ofiler ;' "file.txt" ';
+	readint ;' "file.txt" ';
+	if ;' eof ;' "file.txt" '; ';
+		1
+	else
+		2
+/.
+
+print ;' f ;'  '; ';
+println ;'  ';
+

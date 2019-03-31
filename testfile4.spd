@@ -1,0 +1,22 @@
+func addNums ;' s ';
+./
+	func iter ;' sum ';
+	./
+		var i;
+		= ;' i readint ;' s '; ';
+		
+		if ;' eof ;' s '; ';
+		./
+			sum
+		/.
+		else
+		./
+			iter ;' + ;' sum i '; ';
+		/.
+	/.
+
+	ofiler ;' s ';
+	iter ;' 0 ';
+/.
+
+addNums ;' "file.txt" ';

@@ -1,2 +1,3 @@
 ofiler ;' "file.txt" ';
 readint ;' "file.txt" ';
+eof ;' "file.txt" ';

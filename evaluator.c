@@ -240,15 +240,9 @@ Lexeme *evalEq(Lexeme *tree, Lexeme *env){
 }
 
 Lexeme *evalOpenFileRead(Lexeme *f, Lexeme *env){
-	//FILE *f = fopen(name->string, "r"); //correct opened file
-	//fclose(lfile->file); //can close
-	//Lexeme *lfile = newFileLexeme(FILE_POINTER, fopen(f->string, "r"));
-	// ?
-	//lcurrentfile = lfile;  //to delete later
-	
 	// I couldn't figure out how the notes do this
 	// so I figured out my own strategy
-	// my strategy is to put the file the env like a var
+	// my strategy is to put the file the env like a var; I call it hacker style
 	Lexeme *lfileid = newIDLexeme(ID, f->string);
 	Lexeme *lfp = newFileLexeme(FILE_POINTER, fopen(f->string, "r"));
 	insertEnv(env, lfileid, lfp);
@@ -285,21 +279,32 @@ Lexeme *evalReadInt(Lexeme *l, Lexeme *env){
 	//printLex(l);
 	//printf("looking for: ");
 	//printLex(car(cdr(l)));
-	Lexeme *fid2 = newIDLexeme(ID, car(cdr(l))->string);
+	Lexeme *evaledArgs = eval(car(cdr(l)), env);
+	Lexeme *fid2 = newIDLexeme(ID, evaledArgs->string);
 	//printf("converting to: ");
 	//printLex(fid2);
 	Lexeme *lfile = getVar(env, fid2);
 	x = freadint(lfile->file);
-	printf("%d\n", x);
+	//printf("%d\n", x);
 	return newIntLexeme(INTEGER, x);
 }
 
+// also hacker style for eof
 Lexeme *evalEof(Lexeme *tree, Lexeme *env){
-	return NULL;
+	Lexeme *fid2 = newIDLexeme(ID, tree->string);
+	Lexeme *lfile = getVar(env, fid2);
+	if (feof(lfile->file))
+		return newIntLexeme(INTEGER, 1);
+	else
+		return newIntLexeme(INTEGER, 0);
 }
 
+// and hacker style for fclose
 Lexeme *evalCloseFile(Lexeme *tree, Lexeme *env){
-	return NULL;
+	Lexeme *fid2 = newIDLexeme(ID, tree->string);
+	Lexeme *lfile = getVar(env, fid2);
+	fclose(lfile->file);
+	return newIntLexeme(INTEGER, 1);
 }
 
 
@@ -321,10 +326,13 @@ Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
 		return evalAssign(tree, env);
 	else if (strcmp(id, "==") == 0)
 		return evalEq(tree, env);
-	else if (strcmp(id, "ofiler") == 0)
-		return evalOpenFileRead(car(cdr(tree)), env);
-	else if (strcmp(id, "readint") == 0)
+	else if (strcmp(id, "ofiler") == 0){
+		Lexeme *l = eval(car(cdr(tree)), env);
+		return evalOpenFileRead(l, env);
+	}
+	else if (strcmp(id, "readint") == 0){
 		return evalReadInt(tree, env);
+	}
 	else if (strcmp(id, "eof") == 0)
 		return evalEof(car(cdr(tree)), env);
 	else if (strcmp(id, "cfile") == 0)
