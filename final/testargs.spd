@@ -1,0 +1,6 @@
+print ;' "number of args: " ';
+print ;' getCLArgCount ;' '; ';
+println ;'  ';
+print ;' "first arg: " ';
+print ;' getCLArg ;' 1 '; ';
+println ;'  ';
