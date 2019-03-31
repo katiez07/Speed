@@ -1,0 +1,12 @@
+func f1 ;' f a ';
+./
+	f ;' a ';
+/.
+
+func square ;' b ';
+./
+	* ;' b b ';
+/.
+
+print ;' f1 ;' square 2 '; ';
+println ;'  ';

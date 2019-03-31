@@ -210,10 +210,11 @@ Lexeme *lexCBrace(){  // lexCommentCBrace
 	}
 	else if (ch0 == '/'){
 		char ch1 = read();
-		while (ch1 != '\n')
+		while (ch1 != '\n'){
 			ch1 = read();
+		}
 		lineno++;
-		return NULL; //skip comments like they're whitespace
+		return lex(); //skip comments like they're whitespace
 	}
 	else{
 		pushback(ch0);
@@ -281,6 +282,8 @@ Lexeme *lexKeyOrID(){
 		return newLexeme(VARIABLE);
 	else if (strcmp(buff, "arr") == 0)
 		return newLexeme(ARRAY);
+	else if (strcmp(buff, "lambda") == 0)
+		return newLexeme(LAMBDA);
 	else 
 		return newIDLexeme(ID, buff);
 }

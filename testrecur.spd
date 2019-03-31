@@ -1,0 +1,25 @@
+func fib ;' n ';
+./
+	if ;' == ;' n 0 '; ';
+	./
+		0
+	/.
+	else if ;' == ;' n 1 '; ';
+	./
+		1
+	/.
+	else
+	./
+		+ ;' fib ;' - ;' n 2 '; ';  fib ;' - ;' n 1 ';'; ';
+	/.
+/.
+
+print ;' "fib(5) is: " ';
+print ;' fib ;' 5 '; ';
+println ;'  ';
+print ;' "fib(6) is: " ';
+print ;' fib ;' 6 '; ';
+println ;'  ';
+print ;' "fib(7) is: " ';
+print ;' fib ;' 7 '; ';
+println ;'  ';

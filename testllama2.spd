@@ -1,0 +1,13 @@
+func inc ;' ';
+./
+	lambda ;' x '; 
+	./  
+		+ ;' x 1 ';
+	/.
+/.
+
+inc ;'  ';
+
+print ;' inc 5 ';
+println ;'  ';
+

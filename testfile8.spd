@@ -1,0 +1,25 @@
+func f ;' s ';
+./
+	func iter ;' sum ';
+	./
+		var x;
+		= ;' x readint ;' s '; ';
+		if ;' eof ;' s '; ';
+		./
+			sum
+		/.
+		else
+		./
+			iter ;' + ;' x sum '; ';
+		/.
+	/.
+
+	ofiler ;' s ';
+	var totalsum;
+	= ;' totalsum iter ;' 0 '; ';
+	cfile ;' s ';
+	totalsum
+/.
+
+print ;' f ;' "file.txt" '; ';
+println ;'  ';

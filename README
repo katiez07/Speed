@@ -1,0 +1,122 @@
+Welcome to the language of Speed!!
+
+This language is written by Katie Zucker. It is based off of C and Scam, which
+was written by John C. Lusth, which was based off Scheme, created by MIT, based 
+off of Lisp. Speed files are named with the file extension .spd.
+
+(NOTE: I fully intend to add more functionality to this! It's pretty fun.)
+
+The idea behind this language is to maximize typing efficiency, or the speed at
+which one can code. For this reason, the symbols ;' and '; are used in place of 
+parentheses, as they can be reached without moving your fingers from their
+natural position on the keyboard. Likewise, brackets have been replaced with the
+symbols ./ and /. to denote the bodies of statements, functions, and structures.
+
+Here is a simple code example:
+
+func welcome ;'  ';
+./
+	print ;' "Hello, Speed!" ';
+/.
+
+welcome ;'  ';
+
+
+In the interest of efficiency, there are no commas in the syntax. Lists are
+created as in the following parameter lists:
+
+func f ;' a b c ';
+./
+	+ ;' a b c ';
+./
+
+
+Speed is a functional language. It returns the last thing computed (in the 
+example above, this is the sum of a, b, and c). 
+
+It is permissible to use any number of arguments for default functions:
+
++ ;' 1 2 3 4 5 ';   => 15
+
+
+And variables are dynamically typed. Variables are assigned values using a default
+function "=":
+
+var x;
+= ;' x 3 ';
+x = "hello!"
+
+
+
+
+
+Here is a comprehensive list of things currently supported in Speed:
+
+> comments
+	// comment
+
+> ints, doubles, strings, bools are considered ints 0 and 1
+
+> variables
+	//not typed
+	var a;
+	= ;' a 14.0 ';
+
+> functions
+	func f ;' '; 
+	./ 
+		2 
+	/.
+
+> structures
+	struct s
+	[
+		var a;
+		var b;
+		var c;
+	]
+
+> conditionals
+	if ;' = ;' 4 5 '; ';
+	./
+		"4 == 5"
+	/.
+	else 
+	./
+		"4 != 5"
+	/.
+
+> return
+	return 5;
+
+> arrays
+	arr a [ 1 2 3 4 5 ];
+	print;' a[2] ';    // => 2 
+	= ;' a 2 4 ';
+	print ;' a[2] ';   // => 4
+
+> built-in functions
+	+, -, *, /
+		//basic arithmetic ops, take variable args
+	=
+		//assignment
+		= ;' x 4 ';
+	==
+		if ;' == ;' x 4 '; '; ./ 4 /.
+	print
+		print ;' x ';
+	println
+		//currently only this newline with no params is supported
+		println ;'  ';
+	fopenr, readint, eof, fclose 
+		//1 arg each, the file name; for reading ints from a file
+
+> lambdas
+	lambda ;' x '; 
+	./
+		+ ;' x 1 ';
+	/.
+
+
+
+

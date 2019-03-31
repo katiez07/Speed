@@ -49,6 +49,7 @@ arrDef		:	ARR ID OBRACKET optArgs CBRACKET SEMI
 returnStatement	:	RETURN expr SEMI
 
 unary		:	IDexpr
+			| LAMBDA OPAREN optParamList CPAREN
 			| INTEGER
 			| REAL
 			| STRING

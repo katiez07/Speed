@@ -141,7 +141,9 @@ void printLex(Lexeme *l){
 	else if (l->type == ARRCALL)
 		printf("ARRCALL\n");
 	else if (l->type == FILE_POINTER)
-		printf("FILE_POINTER\n");
+		printf("FILE_POINTER\n");	
+	else if (l->type == LAMBDA)
+		printf("LAMBDA\n");
 	else{
 		printf("unknown lexeme\n");
 	}
@@ -253,6 +255,8 @@ int returnStatementPending(){
 
 int unaryPending(){
 	if (IDexprPending())
+		return 1;
+	else if (check(LAMBDA))
 		return 1;
 	else if (check(INTEGER))
 		return 1;
@@ -448,9 +452,24 @@ Lexeme *returnStatement(){
 	return cons(RETURNSTATEMENT, e, NULL);
 }
 
+Lexeme *lambda(){
+	Lexeme *params, *body;
+	match(LAMBDA);
+	match(OPAREN);
+	params = optParams();
+	match(CPAREN);
+	match(OBRACE);
+	body = program();
+	match(CBRACE);
+	return cons(LAMBDA, NULL, cons(GLUE, params, body));
+}
+
 Lexeme *unary(){
 	if (IDexprPending()){
 		return IDexpr();
+	}
+	else if (check(LAMBDA)){
+		return lambda();
 	}
 	else if (check(INTEGER)){
 		return match(INTEGER);
@@ -500,6 +519,14 @@ void prettyprint(Lexeme *tree){
 		printf("%lf ", tree->real);
 	else if (tree->type == STRING)
 		printf("\"%s\" ", tree->string);
+	else if (tree->type == LAMBDA){
+		printf("lambda ");
+		printf(";' ");
+		prettyprint(car(cdr(tree)));
+		printf(" '; \n./\n");
+		prettyprint(cdr(cdr(tree)));
+		printf("/.\n\n");
+	}
 	else if (tree->type == FUNCCALL){
 		printf("%s ;' ", car(tree)->id);
 		prettyprint(cdr(tree));

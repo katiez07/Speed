@@ -290,8 +290,9 @@ Lexeme *evalReadInt(Lexeme *l, Lexeme *env){
 }
 
 // also hacker style for eof
-Lexeme *evalEof(Lexeme *tree, Lexeme *env){
-	Lexeme *fid2 = newIDLexeme(ID, tree->string);
+Lexeme *evalEof(Lexeme *l, Lexeme *env){
+	Lexeme *evaledArgs = eval(l, env);
+	Lexeme *fid2 = newIDLexeme(ID, evaledArgs->string);
 	Lexeme *lfile = getVar(env, fid2);
 	if (feof(lfile->file))
 		return newIntLexeme(INTEGER, 1);
@@ -300,8 +301,9 @@ Lexeme *evalEof(Lexeme *tree, Lexeme *env){
 }
 
 // and hacker style for fclose
-Lexeme *evalCloseFile(Lexeme *tree, Lexeme *env){
-	Lexeme *fid2 = newIDLexeme(ID, tree->string);
+Lexeme *evalCloseFile(Lexeme *l, Lexeme *env){
+	Lexeme *evaledArgs = eval(l, env);
+	Lexeme *fid2 = newIDLexeme(ID, evaledArgs->string);
 	Lexeme *lfile = getVar(env, fid2);
 	fclose(lfile->file);
 	return newIntLexeme(INTEGER, 1);
@@ -429,6 +431,11 @@ Lexeme *evalIfElse(Lexeme *tree, Lexeme *env){
 		return evalIfElse(cdr(tree), env);
 }
 
+Lexeme *evalLambda(Lexeme *tree, Lexeme *env){
+	return cons(CLOSURE, env, tree);
+}
+
+
 Lexeme *eval(Lexeme *tree, Lexeme *env){
 	if (tree == NULL)
 		return NULL;
@@ -464,6 +471,9 @@ Lexeme *eval(Lexeme *tree, Lexeme *env){
 		return evalID(tree, env);
 	else if (tree->type == IFELSETOP)
 		return evalIfElse(tree, env);
+	else if (tree->type == LAMBDA){
+		return evalLambda(tree, env);
+	}
 	//...
 	else{
 		fprintf(stderr, "internal eval error\n");

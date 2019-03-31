@@ -52,7 +52,8 @@ typedef enum{
 	ARRAY,
 	ARRDEF,
 	ARRCALL,
-	FILE_POINTER
+	FILE_POINTER,
+	LAMBDA
 } types;
 
 typedef struct Lexeme {
