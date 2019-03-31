@@ -51,7 +51,8 @@ typedef enum{
 	NULLVALUE,
 	ARRAY,
 	ARRDEF,
-	ARRCALL
+	ARRCALL,
+	FILE_POINTER
 } types;
 
 typedef struct Lexeme {
@@ -60,6 +61,7 @@ typedef struct Lexeme {
 	char *string;
 	int integer;
 	double real;
+	FILE *file;
 	int line;
 	struct Lexeme *left;
 	struct Lexeme *right;
@@ -78,6 +80,7 @@ extern Lexeme *newStringLexeme(types, char *);
 extern Lexeme *newIntLexeme(types, int);
 extern Lexeme *newRealLexeme(types, double);
 extern Lexeme *newIDLexeme(types, char *);
+extern Lexeme *newFileLexeme(types, FILE *);
 
 extern Lexeme *cons(types, Lexeme *, Lexeme *);
 extern Lexeme *car(Lexeme *);

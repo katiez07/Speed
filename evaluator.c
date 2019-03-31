@@ -4,11 +4,13 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
 #include "lexer.h"
 #include "parser.h"
 #include "environment.h"
 #include "evaluator.h"
 
+Lexeme *lcurrentfile; //currently only able to handle one file at once
 
 /*
  * helper functions
@@ -23,7 +25,11 @@ int isBuiltIn(Lexeme *f){
 		|| strcmp(id, "print") == 0
 		|| strcmp(id, "println") == 0
 		|| strcmp(id, "=") == 0
-		|| strcmp(id, "==") == 0)
+		|| strcmp(id, "==") == 0
+		|| strcmp(id, "ofiler") == 0
+		|| strcmp(id, "readint") == 0
+		|| strcmp(id, "eof") == 0
+		|| strcmp(id, "cfile") == 0)
 		return 1;
 	return 0;
 }
@@ -233,6 +239,69 @@ Lexeme *evalEq(Lexeme *tree, Lexeme *env){
 	}
 }
 
+Lexeme *evalOpenFileRead(Lexeme *f, Lexeme *env){
+	//FILE *f = fopen(name->string, "r"); //correct opened file
+	//fclose(lfile->file); //can close
+	//Lexeme *lfile = newFileLexeme(FILE_POINTER, fopen(f->string, "r"));
+	// ?
+	//lcurrentfile = lfile;  //to delete later
+	
+	// I couldn't figure out how the notes do this
+	// so I figured out my own strategy
+	// my strategy is to put the file the env like a var
+	Lexeme *lfileid = newIDLexeme(ID, f->string);
+	Lexeme *lfp = newFileLexeme(FILE_POINTER, fopen(f->string, "r"));
+	insertEnv(env, lfileid, lfp);
+	
+	return lfp;
+}
+
+int freadint(FILE *fp){
+	//char ch = fgetc(fp);
+	char ch;
+	char *s = malloc(sizeof(char *));
+	int i = 0;
+	ch = fgetc(fp);
+	
+	if (ch <= 47 || ch >= 58){
+		while ((ch <= 47 || ch >= 58) && !feof(fp)){
+			ch = fgetc(fp); 
+		}
+	}
+
+	while ((ch > 47 && ch < 58) && !feof(fp)){
+		s[i] = ch;
+		i++;
+		ch = fgetc(fp);
+	}
+	return atoi(s);
+}
+
+// doing files hacker style :)
+// if you're confused about what this is doing, uncomment stuff here
+Lexeme *evalReadInt(Lexeme *l, Lexeme *env){
+	int x;
+	//printEnv(env);
+	//printLex(l);
+	//printf("looking for: ");
+	//printLex(car(cdr(l)));
+	Lexeme *fid2 = newIDLexeme(ID, car(cdr(l))->string);
+	//printf("converting to: ");
+	//printLex(fid2);
+	Lexeme *lfile = getVar(env, fid2);
+	x = freadint(lfile->file);
+	printf("%d\n", x);
+	return newIntLexeme(INTEGER, x);
+}
+
+Lexeme *evalEof(Lexeme *tree, Lexeme *env){
+	return NULL;
+}
+
+Lexeme *evalCloseFile(Lexeme *tree, Lexeme *env){
+	return NULL;
+}
+
 
 Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
 	char *id = car(tree)->id;
@@ -252,6 +321,14 @@ Lexeme *evalBuiltIn(Lexeme *tree, Lexeme *env){
 		return evalAssign(tree, env);
 	else if (strcmp(id, "==") == 0)
 		return evalEq(tree, env);
+	else if (strcmp(id, "ofiler") == 0)
+		return evalOpenFileRead(car(cdr(tree)), env);
+	else if (strcmp(id, "readint") == 0)
+		return evalReadInt(tree, env);
+	else if (strcmp(id, "eof") == 0)
+		return evalEof(car(cdr(tree)), env);
+	else if (strcmp(id, "cfile") == 0)
+		return evalCloseFile(car(cdr(tree)), env);
 	else 
 		printLex(car(tree));
 
@@ -342,8 +419,6 @@ Lexeme *evalIfElse(Lexeme *tree, Lexeme *env){
 	}
 	else //(ie2 == IFSTATEMENT)
 		return evalIfElse(cdr(tree), env);
-
-	//return NULL;
 }
 
 Lexeme *eval(Lexeme *tree, Lexeme *env){

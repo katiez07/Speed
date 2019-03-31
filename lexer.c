@@ -121,6 +121,16 @@ Lexeme *newIDLexeme(types lexemeType, char *id){
 	return l;
 }
 
+Lexeme *newFileLexeme(types lexemeType, FILE *fp){
+	Lexeme *l = malloc(sizeof(Lexeme));
+	l->type = lexemeType;
+	l->line = lineno;
+	l->file = fp;
+	l->left = NULL;
+	l->right = NULL;
+	return l;
+}
+
 /*
  * cons, car, cdr functions
  */

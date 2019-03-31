@@ -140,6 +140,8 @@ void printLex(Lexeme *l){
 		printf("ARRDEF\n");
 	else if (l->type == ARRCALL)
 		printf("ARRCALL\n");
+	else if (l->type == FILE_POINTER)
+		printf("FILE_POINTER\n");
 	else{
 		printf("unknown lexeme\n");
 	}
