@@ -1,0 +1,31 @@
+func fakePlus ;' a b ';
+./
+	func jk ;' ';
+	./
+		- ;' a b ';
+	/.
+/.
+
+print ;' "returning an object " '; 
+print ;' "(closure), " '; 
+print ;' "which isn't supported " ';
+print ;' "by print" ';
+print ;' fakePlus ;' 3 4 '; ';
+println ;'  ';
+
+func plus ;' a b ';
+./
+	+ ;' a b ';
+/.
+
+func newFakePlus ;' a b ';
+./
+	* ;' a b ';
+/.
+
+= ;' plus newFakePlus ';
+
+print ;' "newFakePlus says " ';
+print ;' "plus(3,4) = " ';
+print ;' plus ;' 3 4 '; ';
+println ;'  ';

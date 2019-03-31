@@ -28,6 +28,30 @@ run		:
 			cat arrays.spd
 			-./eval arrays.spd
 
+problem		:	
+			cat testfilesumnums.spd
+
+problemx	:
+			-./eval testfilesumnums.spd
+
+error1		:	
+			cat error1.spd
+
+error1x		:	
+			-./eval error1.spd
+
+error2		:	
+			cat error2.spd
+
+error2x		:	
+			-./eval error2.spd
+
+error3		:	
+			cat error3.spd
+
+error3x		:
+			-./eval error3.spd
+
 error4		:	
 			cat error4.spd
 
@@ -45,4 +69,41 @@ arrays		:
 
 arraysx		:
 			-./eval arrays.spd
+
+conditionals	:	
+			cat testifelse2.spd
+
+conditionalsx	:	
+			-./eval testifelse2.spd
+
+recursion	:	
+			cat testrecur.spd
+
+recursionx	:	
+			-./eval testrecur.spd
+
+iteration	:	
+			cat testiter.spd
+
+iterationx	:	
+			-./eval testiter.spd
+
+functions	:	
+			cat testfunctions2.spd
+
+functionsx	:	
+			-./eval testfunctions2.spd
+
+lambda		:
+			cat testllama.spd
+
+lambdax		:
+			-./eval testllama.spd
+
+objects		:
+			cat testobj.spd
+
+objectsx	:
+			-./eval testobj.spd
+
 

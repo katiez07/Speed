@@ -1,0 +1,6 @@
+var x;
+= ;' x 4 ';
+var y z;
+= ;' y 4 ';
+print ;' + ;' x y '; ';
+println ;' '; 
